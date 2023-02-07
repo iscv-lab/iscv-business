@@ -1,26 +1,37 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "ESNext",
+    "lib": ["dom", "dom.iterable", "ESNext", "ES2020"],
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@assets/*": ["./src/assets/*"],
+      "@components/*": ["./src/components/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@apis/*": ["./src/apis/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@constants/*": ["./src/constants/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@locales/*": ["./src/locales/*"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@contracts/*": ["./src/contracts/*"],
+      "@graphql/*": ["./src/graphql/*"],
+      "@redux/*": ["./src/redux/*"],
+    }
   },
-  "include": [
-    "src"
-  ]
+  "include": ["**/*.d.js", "**/*.js", "**/*.cjs", "**/*.mjs", "**/*.jsx", "**/*.tsx", "**/*.ts"],
+  "files": ["./declaration.d.ts"],
+  "exclude": ["node_modules", "dist", "build"]
 }

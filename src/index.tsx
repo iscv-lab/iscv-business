@@ -1,19 +1,41 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import setup from '@locales/setup';
+import { store } from '@redux/store';
+import '@styles/global.scss';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import { createRoot } from 'react-dom/client';
+import { I18nextProvider } from 'react-i18next';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { NODE_GRAPHQL_SERVER } from '@constants/index';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = createRoot(document.getElementById('root') as HTMLElement);
+
+const client = new ApolloClient({
+  uri: NODE_GRAPHQL_SERVER,
+  cache: new InMemoryCache({
+    addTypename: true,
+    typePolicies: {
+      employeeByUser: {
+        keyFields: ['profile'],
+        queryType: true,
+      },
+    },
+  }),
+  connectToDevTools: true,
+});
+
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Provider store={store}>
+        <ApolloProvider client={client}>
+          <I18nextProvider i18n={setup}>
+            <App />
+          </I18nextProvider>
+        </ApolloProvider>
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
