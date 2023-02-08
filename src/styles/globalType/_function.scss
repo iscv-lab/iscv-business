@@ -46,11 +46,10 @@
   border-radius: 2.625rem;
   padding: 0.5rem 20px;
   font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
   cursor: pointer;
   color: var(--color-text-secondary);
+  display: inline-block;
 }
 
 @mixin panel {

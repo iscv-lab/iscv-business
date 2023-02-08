@@ -1,0 +1,42 @@
+@use '@styles/globalType/function' as function;
+@use '@styles/globalType/internal' as internal;
+
+.container {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  .left {
+    flex: 2;
+    .title {
+      @include internal.title;
+    }
+  }
+  .right {
+    @include internal.dashboardContainer;
+    min-width: 350px;
+    gap: 0px;
+    flex: 1;
+    .title {
+      @include internal.title;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 20px;
+      .group {
+        .top {
+          .name {
+            color: var(--color-text-grey);
+            font-weight: 500;
+          }
+        }
+        .wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+      }
+    }
+  }
+}

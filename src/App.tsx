@@ -1,15 +1,14 @@
 import { useQuery } from '@apollo/client';
-import { ToastContainer } from '@iscv/toast';
 import { LoadingContainer } from '@components/Loading';
-import { getEmployeeByUser } from '@graphql/Employee';
+import { getBusinessByUser } from '@graphql/Business';
+import { ToastContainer } from '@iscv/toast';
 import { connect } from '@redux/reducers/auth';
 import { RootState } from '@redux/store';
 import { ethers } from 'ethers';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes } from 'react-router-dom';
-import Home from '@pages/home';
-import Register from '@pages/register';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes';
 
 function App() {
   const provider: ethers.providers.Web3Provider = useSelector(
@@ -17,7 +16,7 @@ function App() {
   );
   const account = useSelector((state: RootState) => state.auth.account);
   const dispatch = useDispatch();
-  const { loading, error, data, refetch, subscribeToMore, client } = useQuery(getEmployeeByUser, {
+  const { loading, error, data, refetch, subscribeToMore, client } = useQuery(getBusinessByUser, {
     variables: { user: account },
     notifyOnNetworkStatusChange: true,
   });
@@ -46,12 +45,7 @@ function App() {
     <div className="App">
       <LoadingContainer></LoadingContainer>
       <ToastContainer></ToastContainer>
-      <Routes>
-        <Route path="/" element={<Home></Home>}></Route>
-        <Route path="/register" element={<Register></Register>}></Route>
-        <Route path="404" element={<div>Not found</div>}></Route>
-        <Route path="*" element={<div>404 Page Not Found</div>} />
-      </Routes>
+      <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
     </div>
   );
 }

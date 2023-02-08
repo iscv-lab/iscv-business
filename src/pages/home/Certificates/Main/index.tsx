@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import Navigation from '../../Components/Navigation';
+import Navigation from '@components/Navigation';
 import Item from './Item';
 import styles from './styles.module.scss';
 

@@ -13,11 +13,11 @@ import styles from './styles.module.scss';
 function Item({
   content,
   time,
-  businessPostId,
-  job,
-  hashTag,
-  status,
   id,
+  job,
+  hashtag,
+  status,
+  businessId,
   typeFor,
   disabled,
   imageSource,
@@ -58,7 +58,7 @@ function Item({
         </div>
         <div className={styles.hashtag}>
           <i className="fa-regular fa-hashtag"></i>
-          <a>{hashTag}</a>
+          <a>{hashtag}</a>
         </div>
         <div className={styles.job}>
           <i className="fa-solid fa-tags"></i>
@@ -67,11 +67,12 @@ function Item({
         <div className={styles.contentWrapper}>
           <p>{content}</p>
           <Link
-            to={
-              typeFor == 'business'
-                ? `/page/${id}/post/${businessPostId}`
-                : `/profile/${id}/post/${businessPostId}`
-            }
+          to={""}
+            // to={
+            //   typeFor == 'business'
+            //     ? `/page/${id}/post/${businessPostId}`
+            //     : `/profile/${id}/post/${businessPostId}`
+            // }
           >
             <img
               className={styles.imageContent}

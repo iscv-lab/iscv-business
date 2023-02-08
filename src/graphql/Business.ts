@@ -31,3 +31,7 @@ export const getBusinessByUser = gql`
     }
   }
 `;
+
+export type GetBusinessByUser = {
+  businessByUser: Business;
+};

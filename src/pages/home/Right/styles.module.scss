@@ -1,0 +1,13 @@
+@import '../variables.scss';
+.container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow: scroll;
+  width: $rightWidth;
+  flex-shrink: 0;
+  border-left: 1px solid var(--color-border);
+  background: inherit;
+  padding: 10px 10px;
+}

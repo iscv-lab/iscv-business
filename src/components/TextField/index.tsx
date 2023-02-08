@@ -1,15 +1,19 @@
 import React from 'react';
 import styles from './styles.module.scss';
 
-type Props = {
+type Props = React.DetailedHTMLProps<
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  HTMLTextAreaElement
+> & {
   value: string | number | readonly string[] | undefined;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  placeholder?: string
+  placeholder?: string;
 };
 function Index(props: Props) {
   const { value, onChange, placeholder } = props;
   return (
     <textarea
+      {...props}
       className={styles.container}
       value={value}
       onChange={(e) => {

@@ -1,4 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { NODE_GRAPHQL_SERVER } from '@constants/index';
 import setup from '@locales/setup';
 import { store } from '@redux/store';
 import '@styles/global.scss';
@@ -6,9 +7,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 import App from './App';
-import { NODE_GRAPHQL_SERVER } from '@constants/index';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
@@ -28,14 +27,12 @@ const client = new ApolloClient({
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <ApolloProvider client={client}>
-          <I18nextProvider i18n={setup}>
-            <App />
-          </I18nextProvider>
-        </ApolloProvider>
-      </Provider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <I18nextProvider i18n={setup}>
+          <App />
+        </I18nextProvider>
+      </ApolloProvider>
+    </Provider>
   </React.StrictMode>
 );

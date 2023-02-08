@@ -1,5 +1,5 @@
 import { useLazyQuery, useQuery } from '@apollo/client';
-import avatarDefault from '@asset/avatar.png';
+import avatarDefault from '@assets/avatar.png';
 import { useToast } from '@iscv/Toast';
 
 import { getEmployeeByUser } from '@graphql/Employee';
