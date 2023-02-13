@@ -7,12 +7,13 @@ import { RootState } from '@redux/store';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PostStatus } from 'src/types/posts';
 import * as Yup from 'yup';
 import ReviewPost from './ReviewPost';
 import styles from './styles.module.scss';
 import { usePost } from './usePost';
+import { GetPostsByBusinessId, getPostsByBusinessId } from '@graphql/Posts';
 // Page/Create Post
 function Index() {
   const account = useSelector((state: RootState) => state.auth.account);
@@ -21,13 +22,19 @@ function Index() {
     variables: { user: account },
     notifyOnNetworkStatusChange: true,
   });
+  const navigate = useNavigate()
+  const queryPosts = useQuery<GetPostsByBusinessId>(getPostsByBusinessId, {
+    variables: {
+      businessId: dataBusiness.data?.businessByUser?.id,
+    },
+  });
   const toast = useToast();
   const formik = useFormik({
     initialValues: {
       image: undefined,
-      job: "",
-      content: "",
-      hashtag: "",
+      job: '',
+      content: '',
+      hashtag: '',
       status: PostStatus.OPEN,
     },
     validationSchema: Yup.object({
@@ -49,10 +56,17 @@ function Index() {
         .required('required'),
     }),
     onSubmit: async (values) => {
-      if (!signer || !dataBusiness.data?.businessByUser.id) return;
-      usePost(values as any, toast, signer, dataBusiness.data?.businessByUser.id);
+      if (
+        !signer ||
+        dataBusiness.data?.businessByUser?.id == null ||
+        dataBusiness.data?.businessByUser?.id == undefined
+      )
+        return;
+      usePost(values as any, toast, signer, dataBusiness.data?.businessByUser.id, queryPosts.refetch, navigate);
     },
   });
+
+
   const { t } = useTranslation('page', { keyPrefix: 'dashboard.createPost' });
 
   return (
@@ -141,7 +155,7 @@ function Index() {
         </form>
         <div className={styles.right}>
           <ReviewPost
-            business={dataBusiness.data?.businessByUser}
+            business={dataBusiness.data?.businessByUser!}
             formikForm={formik.values}
           ></ReviewPost>
         </div>

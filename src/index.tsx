@@ -8,6 +8,8 @@ import { createRoot } from 'react-dom/client';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import App from './App';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
@@ -30,7 +32,7 @@ root.render(
     <Provider store={store}>
       <ApolloProvider client={client}>
         <I18nextProvider i18n={setup}>
-          <App />
+          <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
         </I18nextProvider>
       </ApolloProvider>
     </Provider>

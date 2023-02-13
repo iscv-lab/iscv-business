@@ -17,8 +17,8 @@ export const getPosts = gql`
 export type Post = {
   id: number;
   businessId: number;
-  hashTag: any;
-  time: any;
+  hashtag: any;
+  time: number;
   content: string;
   imageSource: string;
   job: string;
@@ -46,3 +46,22 @@ export const getPostsByBusinessId = gql`
 export type GetPostsByBusinessId = {
   postsByBusinessId: Post[] | null;
 };
+
+export type GetPost = {
+  post: Post;
+} | null;
+
+export const getPost = gql`
+  query Query($postId: Int!) {
+    post(postId: $postId) {
+      id
+      businessId
+      hashtag
+      time
+      content
+      imageSource
+      job
+      status
+    }
+  }
+`;

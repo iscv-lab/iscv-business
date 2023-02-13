@@ -1,4 +1,4 @@
-import PostStatus from '@components/PostItem/PostStatus';
+import PostStatus from './PostStatus';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,13 +14,7 @@ function Item({ post }: { post: Post }) {
   const { t } = useTranslation('page', { keyPrefix: 'dashboard.posts' });
 
   const gotoViewPost = () => {
-    navigate(
-      `${routes
-        .find((x) => x.name === 'sidebar')
-        ?.children.find((x) => x.name === 'posts')
-        ?.children?.find((x) => x.name === 'view')
-        ?.path.replace(':/id', id.toString())}`
-    );
+    navigate({ pathname: `view/${id}` });
   };
   return (
     <tr onClick={gotoViewPost}>

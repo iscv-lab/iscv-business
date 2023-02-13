@@ -2,7 +2,7 @@ import Right from './Right';
 import Story from './Story';
 import styles from './styles.module.scss';
 
-function Index() {
+function Home() {
   return (
     <div className={styles.container}>
       <Story></Story>
@@ -11,4 +11,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default Home;

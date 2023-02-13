@@ -21,24 +21,16 @@ function Index() {
 
   const queryPosts = useQuery<GetPostsByBusinessId>(getPostsByBusinessId, {
     variables: {
-      businessId: queryUser.data?.businessByUser.id,
+      businessId: queryUser.data?.businessByUser?.id,
     },
   });
 
   return (
     <>
       <div className={styles.container}>
-        <Navigation title={t('manager_posts')}></Navigation>
+        <Navigation to={'posts'} title={t('manager_posts')}></Navigation>
         <div className={styles.tool}>
-          <Link
-            to={`${
-              routes
-                .at(0)
-                ?.children.find((x) => x.name === 'posts')
-                ?.children?.find((x) => x.name === 'create')?.path
-            }`}
-            className={styles.create}
-          >
+          <Link to={{ pathname: 'create' }} className={styles.create}>
             {t('create_post')}
           </Link>
         </div>
