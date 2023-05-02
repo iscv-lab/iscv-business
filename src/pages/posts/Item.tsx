@@ -1,21 +1,16 @@
-import PostStatus from './PostStatus';
-import clsx from 'clsx';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import styles from './styles.module.scss';
-import { routes } from 'src/routes';
-import { Post } from '@graphql/Posts';
-import { IPFS_GATEWAY } from '@constants/index';
+import { IPFS_GATEWAY } from '@constants/index'
+import clsx from 'clsx'
+import { useNavigate } from 'react-router-dom'
+import PostStatus from './PostStatus'
+import styles from './styles.module.scss'
 
-function Item({ post }: { post: Post }) {
-  const { job, time, status, content, id, imageSource } = post;
-  const navigate = useNavigate();
-  const { t } = useTranslation('page', { keyPrefix: 'dashboard.posts' });
+function Item({ post }: { post: any }) {
+  const { job, time, status, content, id, imageSource } = post
+  const navigate = useNavigate()
 
   const gotoViewPost = () => {
-    navigate({ pathname: `view/${id}` });
-  };
+    navigate({ pathname: `view/${id}` })
+  }
   return (
     <tr onClick={gotoViewPost}>
       <td>
@@ -24,7 +19,7 @@ function Item({ post }: { post: Post }) {
           <p>{job}</p>
         </div>
       </td>
-      <td>{new Date(time * 1000).toLocaleString()}</td>
+      <td>{new Date(time).toLocaleString()}</td>
       <td>
         <PostStatus type={status}></PostStatus>
       </td>
@@ -49,7 +44,7 @@ function Item({ post }: { post: Post }) {
         </div>
       </td>
     </tr>
-  );
+  )
 }
 
-export default Item;
+export default Item

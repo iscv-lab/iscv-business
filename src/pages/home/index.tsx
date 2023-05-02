@@ -1,6 +1,6 @@
-import Right from './Right';
-import Story from './Story';
-import styles from './styles.module.scss';
+import Right from './Right'
+import Story from './Story'
+import styles from './styles.module.scss'
 
 function Home() {
   return (
@@ -8,7 +8,7 @@ function Home() {
       <Story></Story>
       <Right></Right>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

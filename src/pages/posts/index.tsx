@@ -1,30 +1,23 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import Navigation from '@components/Navigation';
-import styles from './styles.module.scss';
-import { routes } from 'src/routes';
-import { useQuery } from '@apollo/client';
-import { GetPosts, GetPostsByBusinessId, getPostsByBusinessId } from '@graphql/Posts';
-import { useSelector } from 'react-redux';
-import { RootState } from '@redux/store';
-import { GetBusinessByUser, getBusinessByUser } from '@graphql/Business';
-import Item from './Item';
+import Navigation from '@components/Navigation'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import styles from './styles.module.scss'
+import { useEffect, useState } from 'react'
+import { getMyPosts } from '@apis/post'
+import { useSelector } from 'react-redux'
+import { RootState } from '@redux/store'
+import Item from './Item'
 
 function Index() {
-  const account = useSelector((state: RootState) => state.auth.account);
-  const { t } = useTranslation('page', { keyPrefix: 'dashboard.posts' });
-  const queryUser = useQuery<GetBusinessByUser>(getBusinessByUser, {
-    variables: { user: account },
-    notifyOnNetworkStatusChange: true,
-  });
-
-  const queryPosts = useQuery<GetPostsByBusinessId>(getPostsByBusinessId, {
-    variables: {
-      businessId: queryUser.data?.businessByUser?.id,
-    },
-  });
-
+  const { t } = useTranslation('page', { keyPrefix: 'dashboard.posts' })
+  const business = useSelector((root: RootState) => root.auth.business)
+  const [list, setList] = useState([])
+  useEffect(() => {
+    if (business?.id) return
+    getMyPosts({ userid: business!.id })
+      .then((success) => setList(success.data))
+      .catch((error) => console.log(error))
+  }, [business])
   return (
     <>
       <div className={styles.container}>
@@ -47,7 +40,7 @@ function Index() {
                 </tr>
               </thead>
               <tbody>
-                {queryPosts.data?.postsByBusinessId?.map((value, index) => {
+                {list.map((value, index) => {
                   return <Item key={index} post={value}></Item>;
                 })}
               </tbody>
@@ -56,7 +49,7 @@ function Index() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default Index;
+export default Index

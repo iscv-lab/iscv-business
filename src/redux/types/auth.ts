@@ -1,14 +1,17 @@
-import { ethers } from "ethers";
+import { ethers } from 'ethers'
+import { NavigateFunction } from 'react-router-dom'
 
 export type IConnectData = {
-  account: string | undefined;
-  signer: ethers.providers.JsonRpcSigner | undefined;
-};
+  account: string | undefined
+  signer?: ethers.providers.JsonRpcSigner | undefined
+  navigate: NavigateFunction
+  business?: any
+}
 
 export type ILoginData = {
-  account: string | undefined;
-  signer: ethers.providers.JsonRpcSigner | undefined;
-};
+  account: string | undefined
+  signer: ethers.providers.JsonRpcSigner | undefined
+}
 
 // export type ISignOutData = {
 

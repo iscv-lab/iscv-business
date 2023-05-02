@@ -1,9 +1,6 @@
-import { ethers } from "ethers";
-import { BusinessController__factory } from './../typechain/factories/controller/business/BusinessController__factory';
+import { ethers } from 'ethers'
+import { BusinessController__factory } from './../typechain/factories/controller/business/BusinessController__factory'
 
-export const useBusiness = async (signer: ethers.providers.JsonRpcSigner) => {
-  return BusinessController__factory.connect(
-    "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
-    signer
-  );
-};
+export const useBusiness = (signer: ethers.providers.JsonRpcSigner) => {
+  return BusinessController__factory.connect('0x610178dA211FEF7D417bC0e6FeD39F05609AD788', signer)
+}

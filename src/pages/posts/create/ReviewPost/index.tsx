@@ -1,36 +1,29 @@
-import avatarDefault from '@asset/avatar.png';
-import { useLoading } from '@components/Loading';
 
-import { useToast } from '@iscv/toast';
-import { Modal } from '@iscv/modal';
-import clsx from 'clsx';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import styles from './styles.module.scss';
-import { Business } from '@graphql/Business';
-import { PostStatus } from 'src/types/posts';
-import { IPFS_GATEWAY } from '@constants/index';
+import { IPFS_GATEWAY } from '@constants/index'
+import clsx from 'clsx'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import { PostStatus } from 'src/types/posts'
+import styles from './styles.module.scss'
 
 type FormikForm = {
-  image: File | undefined;
-  job: string | undefined;
-  content: string | undefined;
-  hashtag: string | undefined;
-  status: PostStatus | undefined;
-};
+  image: File | undefined
+  job: string | undefined
+  content: string | undefined
+  hashtag: string | undefined
+  status: PostStatus | undefined
+}
 
 type Props = {
-  business: Business | undefined;
-  formikForm: FormikForm;
-};
+  business: any | undefined
+  formikForm: FormikForm
+}
 function ReviewPost(props: Props) {
-  const { business } = props;
-  const { content, job, hashtag, status, image } = props.formikForm;
-  const [openClose, setOpenClose] = useState(false);
-  const { t } = useTranslation('component', { keyPrefix: 'postItem.index' });
-  const toast = useToast();
-  const loading = useLoading();
+  const { business } = props
+  const { content, job, hashtag, image } = props.formikForm
+
+  const { t } = useTranslation('component', { keyPrefix: 'postItem.index' })
+
   return (
     <div className={clsx(styles.item, styles.disabled)}>
       <div className={styles.head}>
@@ -127,7 +120,7 @@ function ReviewPost(props: Props) {
           <CommentItem key={0}></CommentItem>
         </div> */}
     </div>
-  );
+  )
 }
 
-export default ReviewPost;
+export default ReviewPost

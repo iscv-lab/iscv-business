@@ -1,41 +1,31 @@
-import { useQuery } from '@apollo/client';
-import Navigation from '@components/Navigation';
-import TextField from '@components/TextField';
-import { GetBusinessByUser, getBusinessByUser } from '@graphql/Business';
-import { useToast } from '@iscv/Toast';
-import { RootState } from '@redux/store';
-import { useFormik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { PostStatus } from 'src/types/posts';
-import * as Yup from 'yup';
-import ReviewPost from './ReviewPost';
-import styles from './styles.module.scss';
-import { usePost } from './usePost';
-import { GetPostsByBusinessId, getPostsByBusinessId } from '@graphql/Posts';
+import Navigation from '@components/Navigation'
+import TextField from '@components/TextField'
+import { useFormik } from 'formik'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import { PostStatus } from 'src/types/posts'
+import * as Yup from 'yup'
+import styles from './styles.module.scss'
+import ReviewPost from './ReviewPost'
+import { useSelector } from 'react-redux'
+import { RootState } from '@redux/store'
+import { useBusiness } from '@contracts/useBusiness'
+import { useLoading } from '@components/Loading'
+import { postImage } from '@apis/common/image'
+import { useToast } from '@iscv/toast'
 // Page/Create Post
 function Index() {
-  const account = useSelector((state: RootState) => state.auth.account);
-  const signer = useSelector((state: RootState) => state.auth.signer);
-  const dataBusiness = useQuery<GetBusinessByUser>(getBusinessByUser, {
-    variables: { user: account },
-    notifyOnNetworkStatusChange: true,
-  });
-  const navigate = useNavigate()
-  const queryPosts = useQuery<GetPostsByBusinessId>(getPostsByBusinessId, {
-    variables: {
-      businessId: dataBusiness.data?.businessByUser?.id,
-    },
-  });
-  const toast = useToast();
+  const business = useSelector((root: RootState) => root.auth.business)
+  const signer = useSelector((root: RootState) => root.auth.signer)
+  const loading = useLoading()
+  const toast = useToast()
   const formik = useFormik({
     initialValues: {
       image: undefined,
       job: '',
       content: '',
       hashtag: '',
-      status: PostStatus.OPEN,
+      status: PostStatus.OPEN
     },
     validationSchema: Yup.object({
       image: Yup.mixed()
@@ -45,7 +35,7 @@ function Index() {
             (value.type === 'image/jpeg' ||
               value.type === 'image/jpg' ||
               value.type === 'image/png')
-          );
+          )
         })
         .required('required'),
       job: Yup.string().required('required'),
@@ -53,21 +43,34 @@ function Index() {
       hashtag: Yup.string().required('required'),
       status: Yup.mixed<PostStatus>()
         .oneOf(Object.values(PostStatus) as PostStatus[])
-        .required('required'),
+        .required('required')
     }),
     onSubmit: async (values) => {
-      if (
-        !signer ||
-        dataBusiness.data?.businessByUser?.id == null ||
-        dataBusiness.data?.businessByUser?.id == undefined
-      )
-        return;
-      usePost(values as any, toast, signer, dataBusiness.data?.businessByUser.id, queryPosts.refetch, navigate);
-    },
-  });
+      loading.open()
+      try {
+        const businessContract = useBusiness(signer!)
 
+        const df = new FormData()
+        df.append('image', values.image!)
+        const imageSource = await postImage(df).then((success) => success.data)
+        await businessContract.addPost(
+          business!.id!,
+          values.hashtag,
+          values.job,
+          values.content,
+          imageSource,
+          values.status
+        )
+      } catch (error) {
+        console.log(error)
+        toast.error()
+      }
+      toast.success()
+      loading.close()
+    }
+  })
 
-  const { t } = useTranslation('page', { keyPrefix: 'dashboard.createPost' });
+  const { t } = useTranslation('page', { keyPrefix: 'dashboard.createPost' })
 
   return (
     <div className={styles.container}>
@@ -154,14 +157,11 @@ function Index() {
           </div>
         </form>
         <div className={styles.right}>
-          <ReviewPost
-            business={dataBusiness.data?.businessByUser!}
-            formikForm={formik.values}
-          ></ReviewPost>
+          <ReviewPost business={business} formikForm={formik.values}></ReviewPost>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Index;
+export default Index
