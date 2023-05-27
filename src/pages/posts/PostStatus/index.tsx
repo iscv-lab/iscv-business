@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import styles from './styles.module.scss';
-import { PostStatus } from 'src/types/posts';
+import { PostStatus } from 'src/globaltypes/posts';
 import { toLower } from 'lodash';
 
 function Index({ type }: { type: PostStatus }) {

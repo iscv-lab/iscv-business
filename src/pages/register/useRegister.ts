@@ -15,7 +15,6 @@ export const useRegister = async (
   const imageSource = await postAvatar(df).then((success: any) => success.data)
   const businessContract = useBusiness(signer)
   return await businessContract.addBusiness(
-    values.category,
     values.fullname,
     values.phone,
     values.professional,

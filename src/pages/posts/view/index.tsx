@@ -5,7 +5,7 @@ import PagePost from '@components/PagePost'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getPost } from '@apis/shared/post'
-import { IPost } from 'src/types/posts'
+import { IPost } from 'src/globaltypes/posts'
 import { useSelector } from 'react-redux'
 import { RootState } from '@redux/store'
 

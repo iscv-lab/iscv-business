@@ -29,6 +29,7 @@
       "@contracts/*": ["./src/contracts/*"],
       "@graphql/*": ["./src/graphql/*"],
       "@redux/*": ["./src/redux/*"],
+      "@globaltypes/*": ["src/globaltypes/*"],
     }
   },
   "include": ["**/*.d.js", "**/*.js", "**/*.cjs", "**/*.mjs", "**/*.jsx", "**/*.tsx", "**/*.ts"],

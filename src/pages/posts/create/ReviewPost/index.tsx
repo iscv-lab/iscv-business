@@ -1,31 +1,24 @@
-
+import { Video } from '@components/index'
 import { IPFS_GATEWAY } from '@constants/index'
 import clsx from 'clsx'
+import { Control, Controller, UseFormWatch } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { PostStatus } from 'src/types/posts'
+import { IForm } from '..'
 import styles from './styles.module.scss'
-
-type FormikForm = {
-  image: File | undefined
-  job: string | undefined
-  content: string | undefined
-  hashtag: string | undefined
-  status: PostStatus | undefined
-}
+import { watch } from 'fs'
 
 type Props = {
   business: any | undefined
-  formikForm: FormikForm
+  control: Control<IForm, any>
+  watch: UseFormWatch<IForm>
 }
 function ReviewPost(props: Props) {
-  const { business } = props
-  const { content, job, hashtag, image } = props.formikForm
-
+  const { business, control, watch } = props
   const { t } = useTranslation('component', { keyPrefix: 'postItem.index' })
 
   return (
-    <div className={clsx(styles.item, styles.disabled)}>
+    <div className={clsx(styles.item)}>
       <div className={styles.head}>
         <div className={styles.personalWrapper}>
           <Link to={`/page/${business?.id}`} className={styles.avatarWrapper}>
@@ -45,20 +38,56 @@ function ReviewPost(props: Props) {
           <i className="fa-solid fa-ellipsis"></i>
         </div>
       </div>
-      <div className={styles.hashtag}>
-        <i className="fa-regular fa-hashtag"></i>
-        <a>{hashtag}</a>
-      </div>
-      <div className={styles.job}>
-        <i className="fa-solid fa-tags"></i>
-        <a>{job}</a>
-      </div>
+      <Controller
+        control={control}
+        name="hashtag"
+        render={({ field }) => (
+          <div className={styles.hashtag}>
+            <i className="fa-regular fa-hashtag"></i>
+            <a>{field.value}</a>
+          </div>
+        )}
+      />
+      <Controller
+        control={control}
+        name="job"
+        render={({ field }) => (
+          <div className={styles.job}>
+            <i className="fa-solid fa-tags"></i>
+            <a>{field.value}</a>
+          </div>
+        )}
+      />
+
       <div className={styles.contentWrapper}>
-        <p>{content}</p>
+        <Controller control={control} name="content" render={({ field }) => <p>{field.value}</p>} />
 
         <div className={styles.imageContent}>
-          {image && <img src={window.URL.createObjectURL(image)} alt="post"></img>}
-          {!image && <i className={clsx('fa-duotone fa-image')}></i>}
+          <Controller
+            control={control}
+            name="image"
+            render={({ field }) =>
+              field.value ? (
+                <img src={window.URL.createObjectURL(field.value)} alt="post"></img>
+              ) : (
+                <></>
+              )
+            }
+          />
+          <Controller
+            control={control}
+            name="video"
+            render={({ field }) =>
+              field.value ? (
+                <div className="w-full">
+                  <Video video={field.value}></Video>
+                </div>
+              ) : (
+                <></>
+              )
+            }
+          />
+          {!watch('image') && !watch('video') && <i className={clsx('fa-duotone fa-image')}></i>}
         </div>
       </div>
       <div className={styles.foot}>

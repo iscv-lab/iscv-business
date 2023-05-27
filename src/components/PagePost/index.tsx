@@ -6,9 +6,9 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { IPost, PostStatus } from 'src/types/posts'
+import { IPost, PostStatus } from 'src/globaltypes/posts'
 import styles from './styles.module.scss'
-import { IBusiness } from 'src/types'
+import { IBusiness } from 'src/globaltypes'
 
 type Props = {
   business: IBusiness

@@ -1,7 +1,20 @@
 @use './base/reset';
 @use './abtracts/mixins';
 @use './abtracts/variables';
+@import '~video-react/styles/scss/video-react';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+.App {
+}
+.video-react {
+  //   padding-top: 0px !important;
+  //   height: 100% !important;
+}
 
-.App{
+input {
+  &:disabled {
+    cursor: none;
+  }
 }

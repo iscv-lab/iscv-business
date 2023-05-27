@@ -49,6 +49,9 @@ $paddingWrapperItem: 5px 10px;
             background: var(--color-button-tertiary);
           }
         }
+        .imageToolDisabled {
+          cursor: none;
+        }
       }
       .content {
         @extend %item;
