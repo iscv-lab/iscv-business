@@ -6,12 +6,13 @@ export enum EButton {
   Default,
   Rounded,
   Border,
-  Square
+  Square,
+  Disabled
 }
 
 type Props = {
   type?: EButton
-  onClick: React.MouseEventHandler<HTMLButtonElement>
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
   width?: number
   height?: number
   color?: EColor
@@ -42,6 +43,7 @@ const Button = (props: Props) => {
     <button
       className={clsx(
         className,
+        { disabled: type == EButton.Disabled },
         { ['rounded-full aspect-square']: type === EButton.Rounded },
         { ['rounded-2xl']: type === EButton.Default },
         { ['border-transparent']: type !== EButton.Border && !checked },
@@ -65,7 +67,7 @@ const Button = (props: Props) => {
         },
         { ['aspect-square']: type === EButton.Square }
       )}
-      onClick={onClick}
+      onClick={(e) => props.type !== EButton.Disabled && onClick?.(e)}
       style={{ width, height }}
     >
       {children}

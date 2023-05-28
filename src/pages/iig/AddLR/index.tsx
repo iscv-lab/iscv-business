@@ -2,25 +2,23 @@ import Button from '@components/Button'
 import { Modal, useLoading } from '@components/index'
 import { useToast } from '@iscv/toast'
 
-import React, { useEffect, useState } from 'react'
+import { putApproved } from '@apis/iig'
+import { useIIG } from '@contracts/iig/useIIG'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { RootState } from '@redux/store'
+import clsx from 'clsx'
+import { useState } from 'react'
 import {
   Controller,
-  ControllerFieldState,
-  ControllerRenderProps,
-  FieldValues,
-  UseFormStateReturn,
   useForm
 } from 'react-hook-form'
-import { IForm, getSchema } from './types'
-import { useIIG } from '@contracts/iig/useIIG'
-import { useSelector } from 'react-redux'
-import { RootState } from '@redux/store'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { useTranslation } from 'react-i18next'
-import clsx from 'clsx'
+import { useSelector } from 'react-redux'
+import { IForm, getSchema } from './types'
 
 type Props = {
   className?: string
+  requestId: string
 }
 
 const AddLR = (props: Props) => {
@@ -49,7 +47,7 @@ const AddLR = (props: Props) => {
     loading.open()
     const iigContract = useIIG(signer)
 
-    await iigContract
+     await iigContract
       .addLRResult(
         data.employeeId!,
         Math.round(new Date(data.testDate!).getTime() / 1000),
@@ -58,11 +56,18 @@ const AddLR = (props: Props) => {
         data.listeningScore!,
         data.readingScore!
       )
-      .then((success) => toast.success('Thành công'))
+      .then(async (tx) => {
+        await tx.wait().then(async (success) => {
+          await putApproved(props.requestId).then(() => {
+            toast.success('Thành công')
+          })
+        })
+      })
       .catch((error) => {
         console.log(error)
         toast.error(error)
       })
+
     loading.close()
   }
   const onValidate = (errors: any) => {

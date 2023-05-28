@@ -2,6 +2,7 @@ import Button from '@components/Button'
 import { Modal, useLoading } from '@components/index'
 import { useToast } from '@iscv/toast'
 
+import { putApproved } from '@apis/iig'
 import { useIIG } from '@contracts/iig/useIIG'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { RootState } from '@redux/store'
@@ -14,6 +15,7 @@ import { IForm, getSchema } from './types'
 
 type Props = {
   className?: string
+  requestId: string
 }
 
 const AddSW = (props: Props) => {
@@ -51,11 +53,22 @@ const AddSW = (props: Props) => {
         data.speakingScore!,
         data.writingScore!
       )
-      .then((success) => toast.success('Thành công'))
+      .then(async (tx) => {
+        await tx.wait().then(async (success) => {
+          await putApproved(props.requestId).then(() => {
+            toast.success('Thành công')
+          })
+        })
+      })
       .catch((error) => {
         console.log(error)
         toast.error(error)
       })
+      .catch((error) => {
+        console.log(error)
+        toast.error(error)
+      })
+
     loading.close()
   }
   const onValidate = (errors: any) => {
