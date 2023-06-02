@@ -8,19 +8,21 @@ import { IPFS_GATEWAY } from '@constants/index'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCurrent } from '@redux/reducers/messages'
 import { RootState } from '@redux/store'
+import { ISearched } from '@apis/employee/types'
 
 type Props = {
   expand: boolean
-  data: IRecent
+  data: IRecent | ISearched
+  onClick?: () => any
 }
-function Index({ expand, data }: Props) {
-  const id = useParams().id
+function Index({ expand, data, onClick }: Props) {
   const dispatch = useDispatch()
   const current = useSelector((state: RootState) => state.messages.current)
   return (
-    <Link
-      onClick={() => dispatch(setCurrent({ employeeId: data.id }))}
-      to={''}
+    <button
+      onClick={() => {
+        onClick ? onClick() : dispatch(setCurrent({ employeeId: data.id }))
+      }}
       className={clsx(styles.container, {
         [styles.active]: current === data.id,
         [styles.expand]: expand
@@ -40,7 +42,7 @@ function Index({ expand, data }: Props) {
         <div className={styles.time}>10:45</div>
         <div className={styles.count}>10</div>
       </div> */}
-    </Link>
+    </button>
   )
 }
 

@@ -6,6 +6,7 @@
   border-right: 1px solid var(--color-border);
   overflow: hidden;
   flex-shrink: 0;
+
   .top {
     width: 100%;
     height: $topHeight;
@@ -18,19 +19,7 @@
     padding: 15px 15px;
     border-bottom: 1px solid var(--color-border);
 
-    .tools {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      gap: 5px;
-      .plus {
-        @include function.buttonRound;
-      }
-      .search {
-        @include function.buttonRound;
-      }
-    }
+ 
   }
 }
 

@@ -48,8 +48,8 @@ export const newRecent = createAsyncThunk<
     updatedAt: Date
   },
   { dispatch: AppDispatch; state: RootState }
->('messages/current', async ({ employeeId, updatedAt }) => {
-  if (store.getState().messages.recent.findIndex((x) => x.id === employeeId)) return
+>('messages/newrecent', async ({ employeeId, updatedAt }) => {
+  if (store.getState().messages.recent.findIndex((x) => x.id === employeeId) !== -1) return
   const employee = await getEmployee(employeeId).then((success) => success.data)
   return {
     recentItem: { ...employee, updatedAt }

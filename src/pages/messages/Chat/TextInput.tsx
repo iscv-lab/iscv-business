@@ -12,7 +12,7 @@ const TextInput = (props: Props) => {
   const [input, setInput] = useState<string>('')
   const client = useSelector((state: RootState) => state.socket.client)
   const business = useSelector((state: RootState) => state.auth.business)
-  const employeeId = 1
+  const current = useSelector((state: RootState) => state.messages.current)
   const dispatch = useDispatch()
   return (
     <div className={styles.chatInput}>
@@ -32,7 +32,7 @@ const TextInput = (props: Props) => {
         onClick={() => {
           client?.emit(
             'receive',
-            { businessId: business?.id, employeeId: 0, content: input },
+            { businessId: business?.id, employeeId: current, content: input },
             (data) => {
               dispatch(addItem(data))
             }

@@ -7,7 +7,7 @@ import styles from './styles.module.scss'
 
 function Index() {
   return (
-    <div className={clsx(styles.container, 'rounded-xl')}>
+    <div className={clsx(styles.container, 'rounded-xl overflow-hidden')}>
       <People></People>
       <Chat></Chat>
       <Tools></Tools>

@@ -5,6 +5,7 @@ import CompactItem from '../Components/CompactItem'
 import clsx from 'clsx'
 import { useSelector } from 'react-redux'
 import { RootState } from '@redux/store'
+import Search from '../Components/Search'
 
 function Index() {
   const { t } = useTranslation('page', { keyPrefix: 'messages.index' })
@@ -13,19 +14,7 @@ function Index() {
   return (
     <div className={styles.container}>
       <div className={styles.top}>
-        {/* <Name
-          avatar={loginState.profile.avatar}
-          title={loginState.profile.name}
-          info={t('hello')}
-        ></Name> */}
-        <div className={styles.tools}>
-          {/* <button className={styles.plus}>
-            <i className="fa-regular fa-plus"></i>
-          </button> */}
-          <button className={clsx(styles.search)}>
-            <i className="fa-regular fa-search"></i>
-          </button>
-        </div>
+        <Search></Search>
       </div>
       <div className={styles.group}>
         <div className={styles.title}>

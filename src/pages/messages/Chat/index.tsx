@@ -5,7 +5,6 @@ import messagesBackground from '@assets/messages_background.jpg'
 
 import { useParams } from 'react-router-dom'
 
-import Top from './Top'
 
 import { RootState } from '@redux/store'
 import { useSelector } from 'react-redux'
@@ -19,7 +18,7 @@ function Chat() {
   const location = useLocation()
   const [isLoading, setIsLoading] = useState(false)
   const id = useParams().id ? parseInt(useParams().id!) : undefined
-  // const business = useSelector(())
+
   const list = useSelector((state: RootState) => state.messages.list)
   return (
     <div className={styles.container}>

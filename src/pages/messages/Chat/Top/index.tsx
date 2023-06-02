@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import Name from "../../Components/Name";
 import Pin from "../../Components/Pin";
 
-function Chat({ profile, id }: any) {
+function Top({ profile, id }: any) {
   const [appointment, setAppointment] = useState<any>([]);
 
   return (
@@ -28,4 +28,4 @@ function Chat({ profile, id }: any) {
   );
 }
 
-export default Chat;
+export default Top;

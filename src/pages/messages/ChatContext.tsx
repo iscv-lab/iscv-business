@@ -1,11 +1,8 @@
-import { createContext } from 'react'
-import io from 'socket.io-client'
-
-import { useParams } from 'react-router-dom'
-import { API_ENDPOINT_NODEJS } from '@constants/index'
+import { Dispatch, SetStateAction, createContext, useState } from 'react'
 
 type IContext = {
-  //
+  searchShow?: boolean
+  setSearchShow?: Dispatch<SetStateAction<boolean>>
 }
 export const ChatContext = createContext<IContext>({})
 
@@ -14,9 +11,12 @@ type Props = {
 }
 
 const ChatContextProvider = ({ children }: Props) => {
-  const id = useParams().id ? parseInt(useParams().id!) : undefined
+  const [searchShow, setSearchShow] = useState(false)
 
-  const data = {}
+  const data = {
+    searchShow,
+    setSearchShow
+  }
   return <ChatContext.Provider value={data}>{children}</ChatContext.Provider>
 }
 

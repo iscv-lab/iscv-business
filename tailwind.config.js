@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 import tailwindColors from 'tailwindcss/colors'
+import plugin from 'tailwindcss/plugin'
 const colorSafeList = []
 
 // Skip these to avoid a load of deprecated warnings when tailwind starts up
@@ -93,5 +94,33 @@ module.exports = {
       }
     }
   },
-  plugins: [require('daisyui')]
+  plugins: [
+    require('daisyui'),
+    plugin(function ({ addBase, addComponents, addUtilities, theme }) {
+      addBase({
+        h1: {
+          fontSize: theme('fontSize.2xl')
+        },
+        h2: {
+          fontSize: theme('fontSize.xl')
+        }
+      })
+      addComponents({
+        '.cardx': {
+          backgroundColor: theme('colors.white'),
+          borderRadius: theme('borderRadius.lg'),
+          padding: theme('spacing.6'),
+          boxShadow: theme('boxShadow.xl')
+        },
+        '.shadow-right': {
+          boxShadow: '4px 0 4px rgba(0, 0, 0, 0.2)'
+        }
+      })
+      addUtilities({
+        '.content-auto': {
+          contentVisibility: 'auto'
+        }
+      })
+    })
+  ]
 }
