@@ -1,8 +1,9 @@
 import axiosServices from '@apis/axiosServices'
 import { IForm } from '@pages/posts/create'
+import { IPost } from 'src/types/posts'
 
 export const getMyPosts = ({ userid }: { userid: number }) => {
-  return axiosServices.get<any>(`business/posts/myposts/${userid}`)
+  return axiosServices.get<IPost[]>(`business/posts/myposts/${userid}`)
 }
 
 export const newPost = (businessId: number, data: IForm) => {

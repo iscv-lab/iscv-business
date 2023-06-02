@@ -5,7 +5,7 @@ export enum PostStatus {
   UPCOMING = 3
 }
 
-export type IPost = {
+export type ICreatePost = {
   id: number
   businessId: number
   hashTag: string

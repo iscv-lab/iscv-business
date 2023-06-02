@@ -3,30 +3,31 @@ import clsx from 'clsx'
 import { useNavigate } from 'react-router-dom'
 import PostStatus from './PostStatus'
 import styles from './styles.module.scss'
+import { IPost } from 'src/types/posts'
+import moment from 'moment'
 
-function Item({ post }: { post: any }) {
-  const { job, time, status, content, id, imageSource } = post
+function Item({ post }: { post: IPost }) {
   const navigate = useNavigate()
 
   const gotoViewPost = () => {
-    navigate({ pathname: `view/${id}` })
+    navigate({ pathname: `view/${post._id}` })
   }
   return (
     <tr onClick={gotoViewPost}>
       <td>
         <div className={styles.name}>
-          <img src={`${IPFS_GATEWAY}${imageSource}`}></img>
-          <p>{job}</p>
+          <img src={`${IPFS_GATEWAY}${post.images?.at(0)}`}></img>
+          <p>{post.job}</p>
         </div>
       </td>
-      <td>{new Date(time).toLocaleString()}</td>
+      <td>{moment(post.updatedAt).format('DD/MM/YYYY HH:mm:ss')}</td>
       <td>
-        <PostStatus type={status}></PostStatus>
+        <PostStatus type={post.status}></PostStatus>
       </td>
       <td>
         <div className={styles.detail}>
           {/* <div className={styles.recruit}>Mobile App</div> */}
-          <p>{content}</p>
+          <p>{post.content}</p>
         </div>
       </td>
       <td>

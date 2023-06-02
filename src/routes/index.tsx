@@ -1,6 +1,9 @@
 import Sidebar from '@components/Sidebar'
+import Apply from '@pages/apply'
+import Appointment from '@pages/appointment'
 import Home from '@pages/home'
 import IIG from '@pages/iig'
+import Messages from '@pages/messages'
 import Posts from '@pages/posts'
 import Create from '@pages/posts/create'
 import ViewPost from '@pages/posts/view'
@@ -32,6 +35,18 @@ export const routes = [
             icon: 'fa-regular fa-house-heart'
           },
           {
+            path: '/appointment',
+            name: 'appointment',
+            element: <Appointment></Appointment>,
+            icon: 'fa-regular fa-house-heart'
+          },
+          {
+            path: '/apply',
+            name: 'apply',
+            element: <Apply></Apply>,
+            icon: 'fa-regular fa-house-heart'
+          },
+          {
             path: '/posts',
             name: 'posts',
             icon: 'fa-regular fa-blog',
@@ -53,9 +68,17 @@ export const routes = [
                 element: <ViewPost></ViewPost>
               }
             ]
+          },
+          {
+            path: '/messages',
+            name: 'messages',
+            element: <Messages></Messages>,
+            icon: 'fa-regular fa-message',
+            children: []
           }
         ]
       },
+
       {
         path: '/register',
         name: 'register',

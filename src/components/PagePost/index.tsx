@@ -6,9 +6,10 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { IPost, PostStatus } from 'src/globaltypes/posts'
-import styles from './styles.module.scss'
 import { IBusiness } from 'src/globaltypes'
+import { ICreatePost, PostStatus } from 'src/globaltypes/posts'
+import styles from './styles.module.scss'
+import { IPost } from 'src/types/posts'
 
 type Props = {
   business: IBusiness
@@ -16,7 +17,7 @@ type Props = {
 }
 function ReviewPost(props: Props) {
   const { business } = props
-  const { content, job, hashTag, status, imageSource } = props.data
+  const { content, job, hashtag, status, images } = props.data
   const [openClose, setOpenClose] = useState(false)
   const { t } = useTranslation('component', { keyPrefix: 'postItem.index' })
   const toast = useToast()
@@ -44,7 +45,7 @@ function ReviewPost(props: Props) {
       </div>
       <div className={styles.hashtag}>
         <i className="fa-regular fa-hashtag"></i>
-        <a>{hashTag}</a>
+        <a>{hashtag}</a>
       </div>
       <div className={styles.job}>
         <i className="fa-solid fa-tags"></i>
@@ -54,8 +55,8 @@ function ReviewPost(props: Props) {
         <p>{content}</p>
 
         <div className={styles.imageContent}>
-          {imageSource && <img src={`${IPFS_GATEWAY}${imageSource}`} alt="post"></img>}
-          {!imageSource && <i className={clsx('fa-duotone fa-image')}></i>}
+          {images?.at(0) && <img src={`${IPFS_GATEWAY}${images?.at(0)}`} alt="post"></img>}
+          {!images?.at(0) && <i className={clsx('fa-duotone fa-image')}></i>}
         </div>
       </div>
       <div className={styles.foot}>

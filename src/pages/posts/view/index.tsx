@@ -1,13 +1,13 @@
-import styles from './styles.module.scss'
-import { useTranslation } from 'react-i18next'
+import { getPost } from '@apis/shared/post'
 import Navigation from '@components/Navigation'
 import PagePost from '@components/PagePost'
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { getPost } from '@apis/shared/post'
-import { IPost } from 'src/globaltypes/posts'
-import { useSelector } from 'react-redux'
 import { RootState } from '@redux/store'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { IPost } from 'src/types/posts'
+import styles from './styles.module.scss'
 
 // Dashboard/ViewPost/index
 function ViewPost() {

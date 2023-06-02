@@ -7,11 +7,12 @@ import { getMyPosts } from '@apis/post'
 import { useSelector } from 'react-redux'
 import { RootState } from '@redux/store'
 import Item from './Item'
+import { IPost } from '../../types/posts/index'
 
-function Index() {
+function Post() {
   const { t } = useTranslation('page', { keyPrefix: 'dashboard.posts' })
   const business = useSelector((root: RootState) => root.auth.business)
-  const [list, setList] = useState([])
+  const [list, setList] = useState<IPost[]>([])
   useEffect(() => {
     if (business?.id) return
     getMyPosts({ userid: business!.id })
@@ -41,7 +42,7 @@ function Index() {
               </thead>
               <tbody>
                 {list.map((value, index) => {
-                  return <Item key={index} post={value}></Item>;
+                  return <Item key={index} post={value}></Item>
                 })}
               </tbody>
             </table>
@@ -52,4 +53,4 @@ function Index() {
   )
 }
 
-export default Index
+export default Post
