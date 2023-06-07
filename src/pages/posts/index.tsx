@@ -14,7 +14,7 @@ function Post() {
   const business = useSelector((root: RootState) => root.auth.business)
   const [list, setList] = useState<IPost[]>([])
   useEffect(() => {
-    if (business?.id) return
+    if (!business?.id) return
     getMyPosts({ userid: business!.id })
       .then((success) => setList(success.data))
       .catch((error) => console.log(error))
