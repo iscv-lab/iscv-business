@@ -1,6 +1,7 @@
 import Sidebar from '@components/Sidebar'
 import Apply from '@pages/apply'
 import Appointment from '@pages/appointment'
+import BigFive from '@pages/bigfive'
 import Home from '@pages/home'
 import IIG from '@pages/iig'
 import Messages from '@pages/messages'
@@ -73,6 +74,13 @@ export const routes = [
             path: '/messages',
             name: 'messages',
             element: <Messages></Messages>,
+            icon: 'fa-regular fa-message',
+            children: []
+          },
+          {
+            path: '/bigfive',
+            name: 'bigfive',
+            element: <BigFive></BigFive>,
             icon: 'fa-regular fa-message',
             children: []
           }

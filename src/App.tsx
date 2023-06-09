@@ -12,7 +12,6 @@ import { Outlet, useNavigate } from 'react-router-dom'
 
 function App() {
   const provider = useSelector((state: RootState) => state.auth.provider)
-  const client = useSelector((state: RootState) => state.socket.client)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const business = useSelector((state: RootState) => state.auth.business)
@@ -41,12 +40,11 @@ function App() {
     })()
   }, [business?.id])
 
-
   return (
     <div className="App">
       <LoadingContainer></LoadingContainer>
       <ToastContainer></ToastContainer>
-      <Outlet></Outlet>
+      {business && <Outlet></Outlet>}
     </div>
   )
 }
