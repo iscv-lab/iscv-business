@@ -61,36 +61,45 @@ import { Button } from '@components/index'
 import { EButton } from '@components/Button'
 import logo from '@assets/logo.jpg'
 import clsx from 'clsx'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { routes } from 'src/routes'
 import { useTranslation } from 'react-i18next'
+import { RootState } from '@redux/store'
+import { useSelector } from 'react-redux'
+import { IPFS_GATEWAY } from '@constants/index'
 
 type Props = {
   //
 }
 
-const Admin = (props: Props) => {
+const SideBar = (props: Props) => {
   const [expand, setExpand] = useState(true)
   const { t } = useTranslation('page', { keyPrefix: 'dashboard.index' })
+  const business = useSelector((state: RootState) => state.auth.business)
+  const navigate = useNavigate()
   return (
     <main className="flex w-full p-2 gap-4 bg-blue-200 min-h-screen">
       <aside className="rounded-xl bg-white py-3 px-3 min-h-full flex flex-col gap-3 ">
-        <h2 className="flex items-center">
-          <img
-            src={logo}
-            width={50}
-            height={50}
-            alt={'logo'}
-            className=" cursor-pointer"
-            onClick={() => setExpand(!expand)}
-          ></img>
-          {expand && <span className="ml-3 text-2xl font-quicksand font-bold">Minh bảo</span>}
-        </h2>
+        {business && (
+          <h2 className="flex items-center">
+            <img
+              src={`${IPFS_GATEWAY}${business?.sourceImage}`}
+              width={50}
+              height={50}
+              // alt={'logo'}
+              className=" cursor-pointer"
+            ></img>
+            {expand && (
+              <span className="ml-3 text-2xl font-quicksand font-bold">{business?.name}</span>
+            )}
+          </h2>
+        )}
+        {!business && <Button onClick={() => navigate('/register')}>Đăng ký</Button>}
         <div className="flex items-center">
-          <Button type={EButton.Square} onClick={() => {}}>
-            <div></div>
+          <Button type={EButton.Square} onClick={() => setExpand(!expand)}>
+            <i className="fa-solid fa-grid text-2xl"></i>
           </Button>
-          {expand && <a className="text-xl ml-4 font-medium">Sakura</a>}
+          {expand && <a className="text-xl ml-4 font-medium">Menu</a>}
         </div>
         <div className=" overflow-hidden h-full flex flex-col">
           <h4 className="text-gray-500 text-lg">Menu</h4>
@@ -98,7 +107,8 @@ const Admin = (props: Props) => {
             {routes
               .at(0)
               ?.children.find((x) => x.name === 'sidebar')
-              ?.children.map((value) => {
+              ?.children.filter((x) => (business ? true : x.name === 'main'))
+              .map((value) => {
                 return (
                   <NavLink
                     to={value.path}
@@ -120,11 +130,11 @@ const Admin = (props: Props) => {
           </div>
         </div>
       </aside>
-      <div className="rounded-xl min-h-full flex-1 overflow-scroll relative">
+      <div className="rounded-xl min-h-full flex-1 overflow-overlay relative bg-blue-100">
         <Outlet></Outlet>
       </div>
     </main>
   )
 }
 
-export default Admin
+export default SideBar

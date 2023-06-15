@@ -13,14 +13,15 @@ import * as Yup from 'yup'
 import styles from './styles.module.scss'
 import { Professional } from './types'
 import { useRegister } from './useRegister'
+import { useNavigate } from 'react-router-dom'
 
-function Index() {
+function Register() {
   const { t } = useTranslation('page', { keyPrefix: 'register.index' })
   const signer = useSelector((state: RootState) => state.auth.signer)
   const avatarRef = useRef<HTMLInputElement>(null)
   const loading = useLoading()
   const toast = useToast()
-
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       avatar: undefined,
@@ -58,7 +59,7 @@ function Index() {
     }),
     onSubmit: async (values) => {
       loading.open()
-      await useRegister(values, signer!)
+      await useRegister(values, signer!, navigate)
         .then(() => {
           toast.success()
         })
@@ -190,4 +191,4 @@ function Index() {
   )
 }
 
-export default Index
+export default Register

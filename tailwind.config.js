@@ -119,6 +119,9 @@ module.exports = {
       addUtilities({
         '.content-auto': {
           contentVisibility: 'auto'
+        },
+        '.overflow-overlay': {
+          overflow: 'overlay'
         }
       })
     })

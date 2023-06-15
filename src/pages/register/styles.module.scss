@@ -27,6 +27,7 @@
 .container {
   width: 100%;
   flex-shrink: 0;
+  overflow: overlay;
   background-color: var(--color-background-primary);
   color: var(--color-text-primary);
   display: flex;

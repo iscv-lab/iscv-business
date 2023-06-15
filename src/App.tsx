@@ -44,7 +44,7 @@ function App() {
     <div className="App">
       <LoadingContainer></LoadingContainer>
       <ToastContainer></ToastContainer>
-      {business && <Outlet></Outlet>}
+      <Outlet></Outlet>
     </div>
   )
 }
