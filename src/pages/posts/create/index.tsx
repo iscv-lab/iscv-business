@@ -1,4 +1,4 @@
-import { newPost } from '@apis/post'
+import { newPost } from '@apis/posts'
 import { useLoading } from '@components/Loading'
 import Navigation from '@components/Navigation'
 import TextField from '@components/TextField'
@@ -63,54 +63,19 @@ function Index() {
     defaultValues: initialValues,
     resolver: yupResolver(schema)
   })
-  const onSubmit = (data: IForm) => {
-    newPost(business!.id, data)
+  const onSubmit = async (data: IForm) => {
+    loading.open()
+    await newPost(business!.id, data)
+      .then(() => {
+        toast.success()
+      })
+      .catch((error) => {
+        console.log(error)
+        toast.error()
+      })
+    loading.close()
   }
   const onErrors = (errors: any) => console.log(errors)
-  // const formik = useFormik<IFormik>({
-  //   ,
-  //   validationSchema: Yup.object({
-  //     image: Yup.mixed()
-  //       .test('type', 'Only the following formats are accepted: .jpeg, .jpg, .jpg', (value) => {
-  //         return (
-  //           value &&
-  //           (value.type === 'image/jpeg' ||
-  //             value.type === 'image/jpg' ||
-  //             value.type === 'image/png')
-  //         )
-  //       })
-  //       .required('required'),
-  //     job: Yup.string().required('required'),
-  //     content: Yup.string().required('required'),
-  //     hashtag: Yup.string().required('required'),
-  //     status: Yup.mixed<PostStatus>()
-  //       .oneOf(Object.values(PostStatus) as PostStatus[])
-  //       .required('required')
-  //   }),
-  //   onSubmit: async (values) => {
-  //     loading.open()
-  //     try {
-  //       const businessContract = useBusiness(signer!)
-
-  //       const df = new FormData()
-  //       df.append('image', values.image!)
-  //       const imageSource = await postImage(df).then((success) => success.data)
-  //       await businessContract.addPost(
-  //         business!.id!,
-  //         values.hashtag,
-  //         values.job,
-  //         values.content,
-  //         imageSource,
-  //         values.status
-  //       )
-  //     } catch (error) {
-  //       console.log(error)
-  //       toast.error()
-  //     }
-  //     toast.success()
-  //     loading.close()
-  //   }
-  // })
 
   const { t } = useTranslation('page', { keyPrefix: 'dashboard.createPost' })
 

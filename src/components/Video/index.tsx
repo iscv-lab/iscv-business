@@ -15,7 +15,7 @@ import {
 
 type Props = {
   className?: string
-  video: File
+  video: File | string
 }
 
 const Video = (props: Props) => {
@@ -26,7 +26,11 @@ const Video = (props: Props) => {
       // height={100}
       poster="/assets/poster.png"
       autoPlay
-      src={URL.createObjectURL(video)}
+      src={
+        (typeof video === 'string' && video) ||
+        (typeof video === 'object' && URL.createObjectURL(video)) ||
+        undefined
+      }
       // aspectRatio="auto"
     >
       {/* <source src={URL.createObjectURL(video)} /> */}

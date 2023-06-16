@@ -16,7 +16,10 @@ function Item({ post }: { post: IPost }) {
     <tr onClick={gotoViewPost}>
       <td>
         <div className={styles.name}>
-          <img src={`${IPFS_GATEWAY}${post.images?.at(0)}`}></img>
+          <div className="w-12 h-12 rounded-full flex justify-center items-center bg-pink-50 border-red-100 border-[1px]">
+            <i className="fa-solid fa-photo-film-music "></i>
+          </div>
+
           <p>{post.job}</p>
         </div>
       </td>
@@ -34,10 +37,6 @@ function Item({ post }: { post: IPost }) {
         <div className={styles.apply}>
           <div className={styles.iconWrapper}>
             <div className={styles.icon}>
-              <img
-                className={styles.itemIcon}
-                src="https://image.thanhnien.vn/1200x630/Uploaded/2022/zxaijr/2021_03_16/rosealbumkyluc1_lgic.png"
-              ></img>
               <div className={clsx(styles.itemIcon, styles.push)}>+1</div>
             </div>
             <p className={styles.quantity}> {/* {list?.length} {t('applier')} */}</p>

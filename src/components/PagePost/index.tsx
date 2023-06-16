@@ -1,6 +1,6 @@
 import { useLoading } from '@components/Loading'
 
-import { IPFS_GATEWAY } from '@constants/index'
+import { API_ENDPOINT_NODEJS, IPFS_GATEWAY } from '@constants/index'
 import { useToast } from '@iscv/toast'
 import clsx from 'clsx'
 import { useState } from 'react'
@@ -10,6 +10,7 @@ import { IBusiness } from 'src/globaltypes'
 import { ICreatePost, PostStatus } from 'src/globaltypes/posts'
 import styles from './styles.module.scss'
 import { IPost } from 'src/types/posts'
+import { Video } from '..'
 
 type Props = {
   business: IBusiness
@@ -55,8 +56,20 @@ function ReviewPost(props: Props) {
         <p>{content}</p>
 
         <div className={styles.imageContent}>
-          {images?.at(0) && <img src={`${IPFS_GATEWAY}${images?.at(0)}`} alt="post"></img>}
-          {!images?.at(0) && <i className={clsx('fa-duotone fa-image')}></i>}
+          {props.data?.images?.at(0) && (
+            <img
+              src={`${API_ENDPOINT_NODEJS}public/business/post/${
+                props.data?._id
+              }/${props.data?.images?.at(0)}.jpeg`}
+            ></img>
+          )}
+          {props.data?.videos?.at(0) && (
+            <Video
+              video={`${API_ENDPOINT_NODEJS}public/business/post/${
+                props.data?._id
+              }/${props.data?.videos?.at(0)}.mp4`}
+            ></Video>
+          )}
         </div>
       </div>
       <div className={styles.foot}>

@@ -1,4 +1,3 @@
-import { getPost } from '@apis/shared/post'
 import Navigation from '@components/Navigation'
 import PagePost from '@components/PagePost'
 import { RootState } from '@redux/store'
@@ -8,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { IPost } from 'src/types/posts'
 import styles from './styles.module.scss'
+import { getPost } from '@apis/posts'
 
 // Dashboard/ViewPost/index
 function ViewPost() {
@@ -16,7 +16,8 @@ function ViewPost() {
   const business = useSelector((state: RootState) => state.auth.business)
   const [post, setPost] = useState<IPost | undefined>()
   useEffect(() => {
-    getPost({ id: Number(id) })
+    if (!id) return
+    getPost({ id: id })
       .then((success) => setPost(success.data))
       .catch((error) => console.log(error))
   }, [])
@@ -29,7 +30,7 @@ function ViewPost() {
           {post && business && <PagePost data={post} business={business}></PagePost>}
         </div>
       </div>
-      <div className={styles.right}>
+      {/* <div className={styles.right}>
         <div className={styles.title}>
           <p>{t('request')}</p>
         </div>
@@ -47,7 +48,7 @@ function ViewPost() {
             <div className={styles.wrapper}></div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

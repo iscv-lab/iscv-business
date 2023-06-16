@@ -66,7 +66,7 @@ import { routes } from 'src/routes'
 import { useTranslation } from 'react-i18next'
 import { RootState } from '@redux/store'
 import { useSelector } from 'react-redux'
-import { IPFS_GATEWAY } from '@constants/index'
+import { IIG_ID, IPFS_GATEWAY } from '@constants/index'
 
 type Props = {
   //
@@ -108,6 +108,7 @@ const SideBar = (props: Props) => {
               .at(0)
               ?.children.find((x) => x.name === 'sidebar')
               ?.children.filter((x) => (business ? true : x.name === 'main'))
+              .filter((x) => (x.name === 'iig' ? business?.id === IIG_ID : true))
               .map((value) => {
                 return (
                   <NavLink

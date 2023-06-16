@@ -1,7 +1,6 @@
 import Sidebar from '@components/Sidebar'
 import Apply from '@pages/apply'
 import Appointment from '@pages/appointment'
-import BigFive from '@pages/bigfive'
 import Home from '@pages/home'
 import IIG from '@pages/iig'
 import Messages from '@pages/messages'
@@ -30,22 +29,11 @@ export const routes = [
             icon: 'fa-regular fa-house-heart'
           },
           {
-            path: '/iig',
-            name: 'iig',
-            element: <IIG></IIG>,
-            icon: 'fa-regular fa-house-heart'
-          },
-          {
-            path: '/appointment',
-            name: 'appointment',
-            element: <Appointment></Appointment>,
-            icon: 'fa-regular fa-house-heart'
-          },
-          {
-            path: '/apply',
-            name: 'apply',
-            element: <Apply></Apply>,
-            icon: 'fa-regular fa-house-heart'
+            path: '/messages',
+            name: 'messages',
+            element: <Messages></Messages>,
+            icon: 'fa-regular fa-message',
+            children: []
           },
           {
             path: '/posts',
@@ -70,19 +58,24 @@ export const routes = [
               }
             ]
           },
+
           {
-            path: '/messages',
-            name: 'messages',
-            element: <Messages></Messages>,
-            icon: 'fa-regular fa-message',
-            children: []
+            path: '/iig',
+            name: 'iig',
+            element: <IIG></IIG>,
+            icon: 'fa-regular fa-certificate'
           },
           {
-            path: '/bigfive',
-            name: 'bigfive',
-            element: <BigFive></BigFive>,
-            icon: 'fa-regular fa-message',
-            children: []
+            path: '/appointment',
+            name: 'appointment',
+            element: <Appointment></Appointment>,
+            icon: 'fa-regular fa-calendar'
+          },
+          {
+            path: '/apply',
+            name: 'apply',
+            element: <Apply></Apply>,
+            icon: 'fa-regular fa-business-time'
           }
         ]
       },

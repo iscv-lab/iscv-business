@@ -20,3 +20,7 @@ export const newPost = (businessId: number, data: IForm) => {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 }
+
+export const getPost = ({ id }: { id: string }) => {
+  return axiosServices.get<IPost>(`business/posts/get/${id}`)
+}

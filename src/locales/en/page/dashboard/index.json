@@ -21,5 +21,9 @@
   "posts": "Posts",
   "certificates": "Certificates",
   "main": "Main",
-  "schedule": "Interview schedule"
+  "schedule": "Interview schedule",
+  "iig": "IIG",
+  "appointment": "Appointment",
+  "apply": "Applier",
+  "messages": "Messages"
 }

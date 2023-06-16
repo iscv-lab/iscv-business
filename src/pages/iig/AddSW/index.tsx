@@ -16,13 +16,15 @@ import { IForm, getSchema } from './types'
 type Props = {
   className?: string
   requestId: string
+  employeeId: number
+  onSuccess: (...args: any[]) => void
 }
 
 const AddSW = (props: Props) => {
   const [open, setOpen] = useState(false)
   const { control, handleSubmit } = useForm<IForm>({
     defaultValues: {
-      employeeId: undefined,
+      employeeId: props.employeeId,
       testDate: undefined,
       shiftTest: undefined,
       expireDate: undefined,
@@ -56,6 +58,8 @@ const AddSW = (props: Props) => {
       .then(async (tx) => {
         await tx.wait().then(async (success) => {
           await putApproved(props.requestId).then(() => {
+            props.onSuccess()
+            setOpen(false)
             toast.success('Thành công')
           })
         })
@@ -88,28 +92,6 @@ const AddSW = (props: Props) => {
         >
           <div className={clsx('p-6 flex flex-col gap-4')}>
             <div className=" flex flex-col gap-4">
-              <div>
-                <div className=" text-lg font-normal">{t('certificate_of_employee')}</div>
-                <Controller
-                  name={'employeeId'}
-                  control={control}
-                  render={({ field, fieldState }) => {
-                    return (
-                      <div className="mt-2">
-                        <input
-                          type="text"
-                          name="employeeId"
-                          className="input input-bordered w-full"
-                          onChange={field.onChange}
-                          value={field.value}
-                        />
-                        {fieldState.error?.message && <p>{fieldState.error?.message}</p>}
-                      </div>
-                    )
-                  }}
-                ></Controller>
-              </div>
-
               <div>
                 <div className=" text-lg font-normal">{t('test_date')}</div>
 

@@ -8,10 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { RootState } from '@redux/store'
 import clsx from 'clsx'
 import { useState } from 'react'
-import {
-  Controller,
-  useForm
-} from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { IForm, getSchema } from './types'
@@ -19,13 +16,15 @@ import { IForm, getSchema } from './types'
 type Props = {
   className?: string
   requestId: string
+  employeeId: number
+  onSuccess: (...args: any[]) => void
 }
 
 const AddLR = (props: Props) => {
   const [open, setOpen] = useState(false)
   const { control, handleSubmit } = useForm<IForm>({
     defaultValues: {
-      employeeId: undefined,
+      employeeId: props.employeeId,
       testDate: undefined,
       shiftTest: undefined,
       expireDate: undefined,
@@ -47,7 +46,7 @@ const AddLR = (props: Props) => {
     loading.open()
     const iigContract = useIIG(signer)
 
-     await iigContract
+    await iigContract
       .addLRResult(
         data.employeeId!,
         Math.round(new Date(data.testDate!).getTime() / 1000),
@@ -57,11 +56,24 @@ const AddLR = (props: Props) => {
         data.readingScore!
       )
       .then(async (tx) => {
-        await tx.wait().then(async (success) => {
-          await putApproved(props.requestId).then(() => {
-            toast.success('Thành công')
+        await tx
+          .wait()
+          .then(async (success) => {
+            await putApproved(props.requestId)
+              .then(() => {
+                props.onSuccess()
+                setOpen(false)
+                toast.success('Thành công')
+              })
+              .catch((error) => {
+                console.log(error)
+                toast.error(error)
+              })
           })
-        })
+          .catch((error) => {
+            console.log(error)
+            toast.error(error)
+          })
       })
       .catch((error) => {
         console.log(error)
@@ -78,7 +90,7 @@ const AddLR = (props: Props) => {
       {open && (
         <Modal
           setShow={setOpen}
-          className="w-[500px]"
+          className="w-[300px]"
           title={
             <div className=" text-white text-center text-xl font-semibold w-full">
               {t('add_a_listening_reading_certificate')}
@@ -87,28 +99,6 @@ const AddLR = (props: Props) => {
         >
           <div className={clsx('p-6 flex flex-col gap-4')}>
             <div className=" flex flex-col gap-4">
-              <div>
-                <div className=" text-lg font-normal">{t('certificate_of_employee')}</div>
-                <Controller
-                  name={'employeeId'}
-                  control={control}
-                  render={({ field, fieldState }) => {
-                    return (
-                      <div className="mt-2">
-                        <input
-                          type="text"
-                          name="employeeId"
-                          className="input input-bordered w-full"
-                          onChange={field.onChange}
-                          value={field.value}
-                        />
-                        {fieldState.error?.message && <p>{fieldState.error?.message}</p>}
-                      </div>
-                    )
-                  }}
-                ></Controller>
-              </div>
-
               <div>
                 <div className=" text-lg font-normal">{t('test_date')}</div>
 

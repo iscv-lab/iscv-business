@@ -11,9 +11,7 @@ const IIG = (props: Props) => {
   return (
     <div>
       <div className="flex gap-5 flex-col">
-       
-
-        <div>
+        <div className="flex flex-col gap-5">
           <TableLR></TableLR>
           <ListRequest></ListRequest>
         </div>
