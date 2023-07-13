@@ -49,7 +49,7 @@ const TableApply = (props: Props) => {
         {list.map((item) => {
           return (
             <tr key={item.id} className=" hover:bg-blue-100">
-              <td className=" sticky top-0 left-0">
+              <td className=" sticky top-0 left-0 w-[50px]">
                 <Button
                   type={EButton.Rounded}
                   onClick={() =>
@@ -64,15 +64,15 @@ const TableApply = (props: Props) => {
                 </Button>
               </td>
               <td>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 w-[300px] truncate">
                   <span>{item.employeeName}</span>
                   <img
-                    className="w-24 h-24 rounded-full"
+                    className="w-24 h-24 rounded-full shrink-0"
                     src={`${IPFS_GATEWAY}${item.employeeSourceImage}`}
                   ></img>
                 </div>
               </td>
-              <td>{item.postContent}</td>
+              <td className=" truncate w-[600px]">{item.postContent}</td>
               <td>{item.postHashtag}</td>
               <td>{item.postJob}</td>
               {/* <td>{item.postStatus}</td> */}

@@ -68,7 +68,7 @@ const Search = (props: Props) => {
           { ['!w-0']: !searchShow }
         )}
       >
-        <div className="px-[6.5px] py-[7.5px]">
+        <div className="px-[6.5px] py-[7.5px] overflow-hidden flex flex-col">
           <div className="relative">
             <button className={clsx(styles.search, ' cardx absolute left-2 top-[6px]')}>
               <i className="fa-regular fa-search"></i>
@@ -82,7 +82,7 @@ const Search = (props: Props) => {
             />
           </div>
 
-          <div className="flex flex-col gap-2 my-4">
+          <div className=" flex-1 flex flex-col gap-2 mt-4 overflow-y-auto">
             {list.map((value) => {
               return (
                 <CompactItem

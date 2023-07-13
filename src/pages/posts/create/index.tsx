@@ -64,6 +64,7 @@ function Index() {
     resolver: yupResolver(schema)
   })
   const onSubmit = async (data: IForm) => {
+    console.log(data)
     loading.open()
     await newPost(business!.id, data)
       .then(() => {

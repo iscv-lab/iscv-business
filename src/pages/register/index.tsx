@@ -8,7 +8,7 @@ import clsx from 'clsx'
 import { useFormik } from 'formik'
 import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Yup from 'yup'
 import styles from './styles.module.scss'
 import { Professional } from './types'
@@ -19,7 +19,9 @@ function Register() {
   const { t } = useTranslation('page', { keyPrefix: 'register.index' })
   const signer = useSelector((state: RootState) => state.auth.signer)
   const avatarRef = useRef<HTMLInputElement>(null)
+  const provider = useSelector((state: RootState) => state.auth.provider)
   const loading = useLoading()
+  const dispatch = useDispatch()
   const toast = useToast()
   const navigate = useNavigate()
   const formik = useFormik({
@@ -59,7 +61,7 @@ function Register() {
     }),
     onSubmit: async (values) => {
       loading.open()
-      await useRegister(values, signer!, navigate)
+      await useRegister(values, signer!, navigate, dispatch, provider)
         .then(() => {
           toast.success()
         })

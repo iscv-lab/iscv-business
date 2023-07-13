@@ -28,9 +28,9 @@ function Item({ post }: { post: IPost }) {
         <PostStatus type={post.status}></PostStatus>
       </td>
       <td>
-        <div className={styles.detail}>
+        <div className={clsx(" overflow-hidden", styles.detail)}>
           {/* <div className={styles.recruit}>Mobile App</div> */}
-          <p>{post.content}</p>
+          <p className=" truncate max-w-[30rem]">{post.content}</p>
         </div>
       </td>
       <td>

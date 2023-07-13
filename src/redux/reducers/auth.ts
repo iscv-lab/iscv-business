@@ -44,7 +44,9 @@ export const connect = createAsyncThunk<
   //   return { account, navigate }
   // }
   const signer = provider.getSigner(account)
-  const business = await getBusinessByUser({ user: account }).then((success) => success.data)
+  const business = await getBusinessByUser({ user: account })
+    .then((success) => success.data)
+    .catch((error) => console.log(error))
 
   // if (!business) {
   //   return { account, signer, navigate }

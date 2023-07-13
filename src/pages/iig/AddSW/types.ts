@@ -17,7 +17,7 @@ export const getSchema = () => {
       .required('required')
       .oneOf(Object.values(IIGShiftTest) as IIGShiftTest[]),
     expireDate: Yup.date().required('required'),
-    speakingScore: Yup.number().min(5, 'min5').max(495, 'max495').required('required'),
-    writingScore: Yup.number().min(5, 'min5').max(495, 'max495').required('required')
+    speakingScore: Yup.number().min(5, 'min5').max(200, 'max200').required('required'),
+    writingScore: Yup.number().min(5, 'min5').max(200, 'max200').required('required')
   })
 }

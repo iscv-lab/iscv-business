@@ -159,7 +159,7 @@ const AddSW = (props: Props) => {
               </div>
 
               <div>
-                <div className=" text-lg font-normal">{t('listening_score')}</div>
+                <div className=" text-lg font-normal">{t('speaking_score')}</div>
 
                 <Controller
                   control={control}
@@ -181,7 +181,7 @@ const AddSW = (props: Props) => {
               </div>
 
               <div>
-                <div className=" text-lg font-normal">{t('reading_score')}</div>
+                <div className=" text-lg font-normal">{t('writing_score')}</div>
 
                 <Controller
                   control={control}

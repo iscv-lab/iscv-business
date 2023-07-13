@@ -2,10 +2,8 @@ import { LoadingContainer } from '@components/Loading'
 
 import { ToastContainer } from '@iscv/toast'
 import { connect } from '@redux/reducers/auth'
-import { addItem } from '@redux/reducers/messages'
 import { setClient } from '@redux/reducers/socket'
 import { RootState } from '@redux/store'
-import { ethers } from 'ethers'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useNavigate } from 'react-router-dom'
@@ -26,12 +24,13 @@ function App() {
       ;(provider.provider as any).removeListener('accountsChanged', () => {})
       ;(provider.provider as any).removeListener('chainChanged', () => {})
     }
-  }, [])
+  }, [provider])
   useEffect(() => {
+    if (!provider) return
     ;(async () => {
       await dispatch<any>(connect({ provider, navigate }))
     })()
-  }, [])
+  }, [provider])
 
   useEffect(() => {
     ;(async () => {

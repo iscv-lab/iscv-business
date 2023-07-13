@@ -65,12 +65,12 @@ export const routes = [
             element: <IIG></IIG>,
             icon: 'fa-regular fa-certificate'
           },
-          {
-            path: '/appointment',
-            name: 'appointment',
-            element: <Appointment></Appointment>,
-            icon: 'fa-regular fa-calendar'
-          },
+          // {
+          //   path: '/appointment',
+          //   name: 'appointment',
+          //   element: <Appointment></Appointment>,
+          //   icon: 'fa-regular fa-calendar'
+          // },
           {
             path: '/apply',
             name: 'apply',
