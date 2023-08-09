@@ -1,38 +1,24 @@
-import avatarDefault from '@asset/avatar.png';
-import { useLoading } from '@components/Loading';
-
-import { useToast } from '@iscv/toast';
-import { Modal } from '@iscv/modal';
-import clsx from 'clsx';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import styles from './styles.module.scss';
-import { Business } from '@graphql/Business';
-import { PostStatus } from 'src/types/posts';
-import { IPFS_GATEWAY } from '@constants/index';
-
-type FormikForm = {
-  image: File | undefined;
-  job: string | undefined;
-  content: string | undefined;
-  hashtag: string | undefined;
-  status: PostStatus | undefined;
-};
+import { Video } from '@components/index'
+import { IPFS_GATEWAY } from '@constants/index'
+import clsx from 'clsx'
+import { Control, Controller, UseFormWatch } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
+import { IForm } from '..'
+import styles from './styles.module.scss'
+import { watch } from 'fs'
 
 type Props = {
-  business: Business | undefined;
-  formikForm: FormikForm;
-};
+  business: any | undefined
+  control: Control<IForm, any>
+  watch: UseFormWatch<IForm>
+}
 function ReviewPost(props: Props) {
-  const { business } = props;
-  const { content, job, hashtag, status, image } = props.formikForm;
-  const [openClose, setOpenClose] = useState(false);
-  const { t } = useTranslation('component', { keyPrefix: 'postItem.index' });
-  const toast = useToast();
-  const loading = useLoading();
+  const { business, control, watch } = props
+  const { t } = useTranslation('component', { keyPrefix: 'postItem.index' })
+
   return (
-    <div className={clsx(styles.item, styles.disabled)}>
+    <div className={clsx(styles.item)}>
       <div className={styles.head}>
         <div className={styles.personalWrapper}>
           <Link to={`/page/${business?.id}`} className={styles.avatarWrapper}>
@@ -52,20 +38,56 @@ function ReviewPost(props: Props) {
           <i className="fa-solid fa-ellipsis"></i>
         </div>
       </div>
-      <div className={styles.hashtag}>
-        <i className="fa-regular fa-hashtag"></i>
-        <a>{hashtag}</a>
-      </div>
-      <div className={styles.job}>
-        <i className="fa-solid fa-tags"></i>
-        <a>{job}</a>
-      </div>
+      <Controller
+        control={control}
+        name="hashtag"
+        render={({ field }) => (
+          <div className={styles.hashtag}>
+            <i className="fa-regular fa-hashtag"></i>
+            <a>{field.value}</a>
+          </div>
+        )}
+      />
+      <Controller
+        control={control}
+        name="job"
+        render={({ field }) => (
+          <div className={styles.job}>
+            <i className="fa-solid fa-tags"></i>
+            <a>{field.value}</a>
+          </div>
+        )}
+      />
+
       <div className={styles.contentWrapper}>
-        <p>{content}</p>
+        <Controller control={control} name="content" render={({ field }) => <p>{field.value}</p>} />
 
         <div className={styles.imageContent}>
-          {image && <img src={window.URL.createObjectURL(image)} alt="post"></img>}
-          {!image && <i className={clsx('fa-duotone fa-image')}></i>}
+          <Controller
+            control={control}
+            name="image"
+            render={({ field }) =>
+              field.value ? (
+                <img src={window.URL.createObjectURL(field.value)} alt="post"></img>
+              ) : (
+                <></>
+              )
+            }
+          />
+          <Controller
+            control={control}
+            name="video"
+            render={({ field }) =>
+              field.value ? (
+                <div className="w-full">
+                  <Video video={field.value}></Video>
+                </div>
+              ) : (
+                <></>
+              )
+            }
+          />
+          {!watch('image') && !watch('video') && <i className={clsx('fa-duotone fa-image')}></i>}
         </div>
       </div>
       <div className={styles.foot}>
@@ -127,7 +149,7 @@ function ReviewPost(props: Props) {
           <CommentItem key={0}></CommentItem>
         </div> */}
     </div>
-  );
+  )
 }
 
-export default ReviewPost;
+export default ReviewPost

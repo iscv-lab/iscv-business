@@ -1,47 +1,42 @@
-import PostStatus from './PostStatus';
-import clsx from 'clsx';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import styles from './styles.module.scss';
-import { routes } from 'src/routes';
-import { Post } from '@graphql/Posts';
-import { IPFS_GATEWAY } from '@constants/index';
+import { IPFS_GATEWAY } from '@constants/index'
+import clsx from 'clsx'
+import { useNavigate } from 'react-router-dom'
+import PostStatus from './PostStatus'
+import styles from './styles.module.scss'
+import { IPost } from 'src/types/posts'
+import moment from 'moment'
 
-function Item({ post }: { post: Post }) {
-  const { job, time, status, content, id, imageSource } = post;
-  const navigate = useNavigate();
-  const { t } = useTranslation('page', { keyPrefix: 'dashboard.posts' });
+function Item({ post }: { post: IPost }) {
+  const navigate = useNavigate()
 
   const gotoViewPost = () => {
-    navigate({ pathname: `view/${id}` });
-  };
+    navigate({ pathname: `view/${post._id}` })
+  }
   return (
     <tr onClick={gotoViewPost}>
       <td>
         <div className={styles.name}>
-          <img src={`${IPFS_GATEWAY}${imageSource}`}></img>
-          <p>{job}</p>
+          <div className="w-12 h-12 rounded-full flex justify-center items-center bg-pink-50 border-red-100 border-[1px]">
+            <i className="fa-solid fa-photo-film-music "></i>
+          </div>
+
+          <p>{post.job}</p>
         </div>
       </td>
-      <td>{new Date(time * 1000).toLocaleString()}</td>
+      <td>{moment(post.updatedAt).format('DD/MM/YYYY HH:mm:ss')}</td>
       <td>
-        <PostStatus type={status}></PostStatus>
+        <PostStatus type={post.status}></PostStatus>
       </td>
       <td>
-        <div className={styles.detail}>
+        <div className={clsx(" overflow-hidden", styles.detail)}>
           {/* <div className={styles.recruit}>Mobile App</div> */}
-          <p>{content}</p>
+          <p className=" truncate max-w-[30rem]">{post.content}</p>
         </div>
       </td>
       <td>
         <div className={styles.apply}>
           <div className={styles.iconWrapper}>
             <div className={styles.icon}>
-              <img
-                className={styles.itemIcon}
-                src="https://image.thanhnien.vn/1200x630/Uploaded/2022/zxaijr/2021_03_16/rosealbumkyluc1_lgic.png"
-              ></img>
               <div className={clsx(styles.itemIcon, styles.push)}>+1</div>
             </div>
             <p className={styles.quantity}> {/* {list?.length} {t('applier')} */}</p>
@@ -49,7 +44,7 @@ function Item({ post }: { post: Post }) {
         </div>
       </td>
     </tr>
-  );
+  )
 }
 
-export default Item;
+export default Item

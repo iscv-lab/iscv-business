@@ -28,7 +28,6 @@ import type {
 } from "../../common";
 
 export type ProfileStruct = {
-  category: PromiseOrValue<BigNumberish>;
   id: PromiseOrValue<BigNumberish>;
   user: PromiseOrValue<string>;
   name: PromiseOrValue<string>;
@@ -42,7 +41,6 @@ export type ProfileStruct = {
 
 export type ProfileStructOutput = [
   BigNumber,
-  BigNumber,
   string,
   string,
   string,
@@ -52,7 +50,6 @@ export type ProfileStructOutput = [
   string,
   string
 ] & {
-  category: BigNumber;
   id: BigNumber;
   user: string;
   name: string;
@@ -78,20 +75,47 @@ export type EmployeeSkillStructOutput = [
   BigNumber
 ] & { id: BigNumber; employeeId: BigNumber; title: string; level: BigNumber };
 
+export type BusinessApplyStruct = {
+  id: PromiseOrValue<BigNumberish>;
+  employeeId: PromiseOrValue<BigNumberish>;
+  businessId: PromiseOrValue<BigNumberish>;
+  postId: PromiseOrValue<string>;
+  time: PromiseOrValue<BigNumberish>;
+  status: PromiseOrValue<BigNumberish>;
+};
+
+export type BusinessApplyStructOutput = [
+  BigNumber,
+  BigNumber,
+  BigNumber,
+  string,
+  BigNumber,
+  BigNumber
+] & {
+  id: BigNumber;
+  employeeId: BigNumber;
+  businessId: BigNumber;
+  postId: string;
+  time: BigNumber;
+  status: BigNumber;
+};
+
 export interface EmployeeControllerInterface extends utils.Interface {
   functions: {
     "_checkApplyIdBelongsToEmployeeId(uint256,uint256)": FunctionFragment;
-    "_checkExistApply(uint256,uint256)": FunctionFragment;
+    "_checkExistApply(uint256,string)": FunctionFragment;
     "_checkExistEmployeeAccount()": FunctionFragment;
     "_checkExistSkill(uint256,string)": FunctionFragment;
-    "_checkIdBelongsToPostId(uint256,uint256)": FunctionFragment;
-    "addEmployee(uint256,string,string,string,string,string,string,string)": FunctionFragment;
+    "_checkIdBelongsToPostId(uint256,string)": FunctionFragment;
+    "addEmployee(string,string,string,string,string,string,string)": FunctionFragment;
     "addSkill(uint256,string,uint256)": FunctionFragment;
-    "applyPost(uint256,uint256,uint256)": FunctionFragment;
+    "applyPost(uint256,uint256,string)": FunctionFragment;
     "destroy()": FunctionFragment;
     "editSkill(uint256,uint256,uint256)": FunctionFragment;
     "getAllProfile()": FunctionFragment;
     "getAllSkill()": FunctionFragment;
+    "getListAppliesPost()": FunctionFragment;
+    "getProfile(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
@@ -110,6 +134,8 @@ export interface EmployeeControllerInterface extends utils.Interface {
       | "editSkill"
       | "getAllProfile"
       | "getAllSkill"
+      | "getListAppliesPost"
+      | "getProfile"
       | "owner"
       | "transferOwnership"
   ): FunctionFragment;
@@ -120,7 +146,7 @@ export interface EmployeeControllerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "_checkExistApply",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "_checkExistEmployeeAccount",
@@ -132,12 +158,11 @@ export interface EmployeeControllerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "_checkIdBelongsToPostId",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "addEmployee",
     values: [
-      PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
       PromiseOrValue<string>,
@@ -160,7 +185,7 @@ export interface EmployeeControllerInterface extends utils.Interface {
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
+      PromiseOrValue<string>
     ]
   ): string;
   encodeFunctionData(functionFragment: "destroy", values?: undefined): string;
@@ -179,6 +204,14 @@ export interface EmployeeControllerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getAllSkill",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getListAppliesPost",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getProfile",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -222,6 +255,11 @@ export interface EmployeeControllerInterface extends utils.Interface {
     functionFragment: "getAllSkill",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getListAppliesPost",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getProfile", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
@@ -282,7 +320,7 @@ export interface EmployeeController extends BaseContract {
 
     _checkExistApply(
       employeeId: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
@@ -296,12 +334,11 @@ export interface EmployeeController extends BaseContract {
 
     _checkIdBelongsToPostId(
       id: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     addEmployee(
-      category: PromiseOrValue<BigNumberish>,
       name: PromiseOrValue<string>,
       phone: PromiseOrValue<string>,
       professional: PromiseOrValue<string>,
@@ -322,7 +359,7 @@ export interface EmployeeController extends BaseContract {
     applyPost(
       employeeId: PromiseOrValue<BigNumberish>,
       businessId: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -343,6 +380,15 @@ export interface EmployeeController extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[EmployeeSkillStructOutput[]]>;
 
+    getListAppliesPost(
+      overrides?: CallOverrides
+    ): Promise<[BusinessApplyStructOutput[]]>;
+
+    getProfile(
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[ProfileStructOutput]>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     transferOwnership(
@@ -359,7 +405,7 @@ export interface EmployeeController extends BaseContract {
 
   _checkExistApply(
     employeeId: PromiseOrValue<BigNumberish>,
-    postId: PromiseOrValue<BigNumberish>,
+    postId: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
@@ -373,12 +419,11 @@ export interface EmployeeController extends BaseContract {
 
   _checkIdBelongsToPostId(
     id: PromiseOrValue<BigNumberish>,
-    postId: PromiseOrValue<BigNumberish>,
+    postId: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   addEmployee(
-    category: PromiseOrValue<BigNumberish>,
     name: PromiseOrValue<string>,
     phone: PromiseOrValue<string>,
     professional: PromiseOrValue<string>,
@@ -399,7 +444,7 @@ export interface EmployeeController extends BaseContract {
   applyPost(
     employeeId: PromiseOrValue<BigNumberish>,
     businessId: PromiseOrValue<BigNumberish>,
-    postId: PromiseOrValue<BigNumberish>,
+    postId: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -418,6 +463,15 @@ export interface EmployeeController extends BaseContract {
 
   getAllSkill(overrides?: CallOverrides): Promise<EmployeeSkillStructOutput[]>;
 
+  getListAppliesPost(
+    overrides?: CallOverrides
+  ): Promise<BusinessApplyStructOutput[]>;
+
+  getProfile(
+    id: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<ProfileStructOutput>;
+
   owner(overrides?: CallOverrides): Promise<string>;
 
   transferOwnership(
@@ -434,7 +488,7 @@ export interface EmployeeController extends BaseContract {
 
     _checkExistApply(
       employeeId: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -448,12 +502,11 @@ export interface EmployeeController extends BaseContract {
 
     _checkIdBelongsToPostId(
       id: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     addEmployee(
-      category: PromiseOrValue<BigNumberish>,
       name: PromiseOrValue<string>,
       phone: PromiseOrValue<string>,
       professional: PromiseOrValue<string>,
@@ -474,7 +527,7 @@ export interface EmployeeController extends BaseContract {
     applyPost(
       employeeId: PromiseOrValue<BigNumberish>,
       businessId: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -492,6 +545,15 @@ export interface EmployeeController extends BaseContract {
     getAllSkill(
       overrides?: CallOverrides
     ): Promise<EmployeeSkillStructOutput[]>;
+
+    getListAppliesPost(
+      overrides?: CallOverrides
+    ): Promise<BusinessApplyStructOutput[]>;
+
+    getProfile(
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<ProfileStructOutput>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -521,7 +583,7 @@ export interface EmployeeController extends BaseContract {
 
     _checkExistApply(
       employeeId: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -535,12 +597,11 @@ export interface EmployeeController extends BaseContract {
 
     _checkIdBelongsToPostId(
       id: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     addEmployee(
-      category: PromiseOrValue<BigNumberish>,
       name: PromiseOrValue<string>,
       phone: PromiseOrValue<string>,
       professional: PromiseOrValue<string>,
@@ -561,7 +622,7 @@ export interface EmployeeController extends BaseContract {
     applyPost(
       employeeId: PromiseOrValue<BigNumberish>,
       businessId: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -580,6 +641,13 @@ export interface EmployeeController extends BaseContract {
 
     getAllSkill(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getListAppliesPost(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getProfile(
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferOwnership(
@@ -597,7 +665,7 @@ export interface EmployeeController extends BaseContract {
 
     _checkExistApply(
       employeeId: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -613,12 +681,11 @@ export interface EmployeeController extends BaseContract {
 
     _checkIdBelongsToPostId(
       id: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     addEmployee(
-      category: PromiseOrValue<BigNumberish>,
       name: PromiseOrValue<string>,
       phone: PromiseOrValue<string>,
       professional: PromiseOrValue<string>,
@@ -639,7 +706,7 @@ export interface EmployeeController extends BaseContract {
     applyPost(
       employeeId: PromiseOrValue<BigNumberish>,
       businessId: PromiseOrValue<BigNumberish>,
-      postId: PromiseOrValue<BigNumberish>,
+      postId: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -657,6 +724,15 @@ export interface EmployeeController extends BaseContract {
     getAllProfile(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getAllSkill(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getListAppliesPost(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getProfile(
+      id: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

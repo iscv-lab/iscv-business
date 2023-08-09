@@ -1,6 +1,6 @@
 export enum Professional {
-  NORMAL = 0,
-  EDUCATION = 1,
+  NORMAL = "normal",
+  EDUCATION = "education",
 }
 
 export type FormikData = {

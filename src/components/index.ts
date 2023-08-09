@@ -1,3 +1,6 @@
-export * from "./Loading"
-export * from "./TextField"
-export * from "./Dropdown"
+export * from './Loading'
+export * from './TextField'
+export * from './Dropdown'
+export { default as Video } from './Video'
+export { default as Button } from './Button'
+export { default as Modal } from './Modal'

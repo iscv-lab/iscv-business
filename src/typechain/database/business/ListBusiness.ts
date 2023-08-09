@@ -28,7 +28,6 @@ import type {
 } from "../../common";
 
 export type ProfileStruct = {
-  category: PromiseOrValue<BigNumberish>;
   id: PromiseOrValue<BigNumberish>;
   user: PromiseOrValue<string>;
   name: PromiseOrValue<string>;
@@ -38,11 +37,11 @@ export type ProfileStruct = {
   github: PromiseOrValue<string>;
   linkedin: PromiseOrValue<string>;
   sourceImage: PromiseOrValue<string>;
+  category: PromiseOrValue<BigNumberish>;
 };
 
 export type ProfileStructOutput = [
   BigNumber,
-  BigNumber,
   string,
   string,
   string,
@@ -50,9 +49,9 @@ export type ProfileStructOutput = [
   string,
   string,
   string,
-  string
+  string,
+  number
 ] & {
-  category: BigNumber;
   id: BigNumber;
   user: string;
   name: string;
@@ -62,22 +61,22 @@ export type ProfileStructOutput = [
   github: string;
   linkedin: string;
   sourceImage: string;
+  category: number;
 };
 
 export interface ListBusinessInterface extends utils.Interface {
   functions: {
-    "add((uint256,uint256,address,string,string,string,string,string,string,string))": FunctionFragment;
+    "add((uint256,address,string,string,string,string,string,string,string,uint8))": FunctionFragment;
     "approve(address)": FunctionFragment;
     "at(uint256)": FunctionFragment;
     "atAddress(address)": FunctionFragment;
     "destroy()": FunctionFragment;
-    "edit((uint256,uint256,address,string,string,string,string,string,string,string))": FunctionFragment;
+    "edit((uint256,address,string,string,string,string,string,string,string,uint8))": FunctionFragment;
     "findIdByAddress(address)": FunctionFragment;
     "getAll()": FunctionFragment;
     "list(uint256)": FunctionFragment;
     "owner()": FunctionFragment;
     "retrive(address)": FunctionFragment;
-    "setCategory(uint256,uint256)": FunctionFragment;
     "setEmail(uint256,string)": FunctionFragment;
     "setGithub(uint256,string)": FunctionFragment;
     "setId(uint256,uint256)": FunctionFragment;
@@ -103,7 +102,6 @@ export interface ListBusinessInterface extends utils.Interface {
       | "list"
       | "owner"
       | "retrive"
-      | "setCategory"
       | "setEmail"
       | "setGithub"
       | "setId"
@@ -144,10 +142,6 @@ export interface ListBusinessInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "retrive",
     values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setCategory",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "setEmail",
@@ -204,10 +198,6 @@ export interface ListBusinessInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "list", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "retrive", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setCategory",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "setEmail", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setGithub", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setId", data: BytesLike): Result;
@@ -337,7 +327,6 @@ export interface ListBusiness extends BaseContract {
     ): Promise<
       [
         BigNumber,
-        BigNumber,
         string,
         string,
         string,
@@ -345,9 +334,9 @@ export interface ListBusiness extends BaseContract {
         string,
         string,
         string,
-        string
+        string,
+        number
       ] & {
-        category: BigNumber;
         id: BigNumber;
         user: string;
         name: string;
@@ -357,6 +346,7 @@ export interface ListBusiness extends BaseContract {
         github: string;
         linkedin: string;
         sourceImage: string;
+        category: number;
       }
     >;
 
@@ -364,12 +354,6 @@ export interface ListBusiness extends BaseContract {
 
     retrive(
       value: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    setCategory(
-      index: PromiseOrValue<BigNumberish>,
-      value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -475,7 +459,6 @@ export interface ListBusiness extends BaseContract {
   ): Promise<
     [
       BigNumber,
-      BigNumber,
       string,
       string,
       string,
@@ -483,9 +466,9 @@ export interface ListBusiness extends BaseContract {
       string,
       string,
       string,
-      string
+      string,
+      number
     ] & {
-      category: BigNumber;
       id: BigNumber;
       user: string;
       name: string;
@@ -495,6 +478,7 @@ export interface ListBusiness extends BaseContract {
       github: string;
       linkedin: string;
       sourceImage: string;
+      category: number;
     }
   >;
 
@@ -502,12 +486,6 @@ export interface ListBusiness extends BaseContract {
 
   retrive(
     value: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  setCategory(
-    index: PromiseOrValue<BigNumberish>,
-    value: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -605,7 +583,6 @@ export interface ListBusiness extends BaseContract {
     ): Promise<
       [
         BigNumber,
-        BigNumber,
         string,
         string,
         string,
@@ -613,9 +590,9 @@ export interface ListBusiness extends BaseContract {
         string,
         string,
         string,
-        string
+        string,
+        number
       ] & {
-        category: BigNumber;
         id: BigNumber;
         user: string;
         name: string;
@@ -625,6 +602,7 @@ export interface ListBusiness extends BaseContract {
         github: string;
         linkedin: string;
         sourceImage: string;
+        category: number;
       }
     >;
 
@@ -632,12 +610,6 @@ export interface ListBusiness extends BaseContract {
 
     retrive(
       value: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setCategory(
-      index: PromiseOrValue<BigNumberish>,
-      value: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -767,12 +739,6 @@ export interface ListBusiness extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setCategory(
-      index: PromiseOrValue<BigNumberish>,
-      value: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     setEmail(
       index: PromiseOrValue<BigNumberish>,
       value: PromiseOrValue<string>,
@@ -879,12 +845,6 @@ export interface ListBusiness extends BaseContract {
 
     retrive(
       value: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setCategory(
-      index: PromiseOrValue<BigNumberish>,
-      value: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

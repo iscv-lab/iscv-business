@@ -1,36 +1,29 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
-import avatarDefault from '@assets/avatar.png';
-import { useToast } from '@iscv/Toast';
+import avatarDefault from '@assets/avatar.png'
+import { useToast } from '@iscv/Toast'
 
-import { getEmployeeByUser } from '@graphql/Employee';
-import { emailRegExp, phoneRegExp } from '@helpers/regex';
-import { RootState } from '@redux/store';
-import clsx from 'clsx';
-import { useFormik } from 'formik';
-import { useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import styles from './styles.module.scss';
-import { useRegister } from './useRegister';
-import { getBusinessByUser } from '@graphql/Business';
-import { Professional } from './types';
+import { useLoading } from '@components/Loading'
+import { emailRegExp, phoneRegExp } from '@helpers/regex'
+import { RootState } from '@redux/store'
+import clsx from 'clsx'
+import { useFormik } from 'formik'
+import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import * as Yup from 'yup'
+import styles from './styles.module.scss'
+import { Professional } from './types'
+import { useRegister } from './useRegister'
+import { useNavigate } from 'react-router-dom'
 
-function Index() {
-  const { t } = useTranslation('page', { keyPrefix: 'register.index' });
-  const signer = useSelector((state: RootState) => state.auth.signer);
-  const avatarRef = useRef<HTMLInputElement>(null);
-  const [employeeOrBusiness, setEmployeeOrBusiness] = useState(false);
-  const toast = useToast();
-  const account = useSelector((state: RootState) => state.auth.account);
-  const { loading, error, data, refetch, subscribeToMore, client } = useQuery(getBusinessByUser, {
-    variables: { user: account },
-    notifyOnNetworkStatusChange: true,
-  });
-
-  const navigate = useNavigate();
-
+function Register() {
+  const { t } = useTranslation('page', { keyPrefix: 'register.index' })
+  const signer = useSelector((state: RootState) => state.auth.signer)
+  const avatarRef = useRef<HTMLInputElement>(null)
+  const provider = useSelector((state: RootState) => state.auth.provider)
+  const loading = useLoading()
+  const dispatch = useDispatch()
+  const toast = useToast()
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       avatar: undefined,
@@ -40,7 +33,7 @@ function Index() {
       email: '',
       github: '',
       linkedin: '',
-      category: '1',
+      category: '1'
     },
     validationSchema: Yup.object({
       avatar: Yup.mixed()
@@ -51,7 +44,7 @@ function Index() {
             (value.type === 'image/jpeg' ||
               value.type === 'image/jpg' ||
               value.type === 'image/png')
-          );
+          )
         }),
       fullname: Yup.string().required(t('require').toString()),
       phone: Yup.string()
@@ -64,12 +57,21 @@ function Index() {
         .matches(emailRegExp, t('invalid').toString()),
       github: Yup.string(),
       linkedin: Yup.string(),
-      category: Yup.string(),
+      category: Yup.string()
     }),
     onSubmit: async (values) => {
-      useRegister(values, signer!, toast, navigate, refetch);
-    },
-  });
+      loading.open()
+      await useRegister(values, signer!, navigate, dispatch, provider)
+        .then(() => {
+          toast.success()
+        })
+        .catch((error) => {
+          console.log(error)
+          toast.error()
+        })
+      loading.close()
+    }
+  })
   return (
     <div className={styles.container}>
       <div className={styles.languageWrapper}>
@@ -130,7 +132,7 @@ function Index() {
           </div>
 
           <div className={styles.boxWrapper}>
-            <label className={styles.label}>{'professional'}</label>
+            <label className={styles.label}>{t('professional')}</label>
             <select
               // type="text"
               name="professional"
@@ -138,10 +140,13 @@ function Index() {
               value={formik?.values.professional}
               onChange={formik?.handleChange}
             >
-              <option value="student">Student</option>
-              <option value="fresher">Fresher</option>
-              <option value="intern">Intern</option>
-              <option value="another">Another</option>
+              {Object.values(Professional).map((value) => {
+                return (
+                  <option value={value} key={value}>
+                    {value}
+                  </option>
+                )
+              })}
             </select>
             <p className={styles.error}>{formik?.errors.professional?.toString()}</p>
           </div>
@@ -185,7 +190,7 @@ function Index() {
         </div>
       </form>
     </div>
-  );
+  )
 }
 
-export default Index;
+export default Register
